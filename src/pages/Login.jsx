@@ -24,7 +24,7 @@ const LoginPage = () => {
     console.log("Data:", data);
     const result = LoginSchema.safeParse(data);
     if (result?.success) {
-      navigate("/dashboard");
+      navigate("/dashboard/operator-list");
     }
   };
 
