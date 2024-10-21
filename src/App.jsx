@@ -1,0 +1,97 @@
+import React, { useState, useEffect } from "react";
+import { Routes, Route, useLocation } from "react-router-dom";
+import OperatorList from "./pages/OperatorList";
+import VendingMachines from "./pages/VendingMachines";
+import VendingMachineManagement from "./pages/VendingMachineManagement";
+import OperatorsManagement from "./pages/OperatorsManagement";
+import CardUserManagement from "./pages/CardUserManagement";
+import CardAssociation from "./pages/CardAssociation";
+import OperatorReports from "./pages/OperatorReports";
+import MachineReports from "./pages/MachineReports";
+import AdminLayout from "./layout/AdminLayout";
+import NotFound from "./pages/NotFound";
+import Login from "./pages/Login";
+import "./css/style.css";
+import "./charts/ChartjsConfig";
+
+function App() {
+  const location = useLocation();
+
+  useEffect(() => {
+    document.querySelector("html").style.scrollBehavior = "auto";
+    window.scroll({ top: 0 });
+    document.querySelector("html").style.scrollBehavior = "";
+  }, [location.pathname]); // triggered on route change
+
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  return (
+    <Routes>
+      {/* Admin Layout routes with nested pages */}
+      <Route exact path="/" element={<Login />} />
+      {/* /admin/dashboard */}
+      <Route
+        path="/dashboard"
+        element={
+          <AdminLayout
+            sidebarOpen={sidebarOpen}
+            setSidebarOpen={setSidebarOpen}
+          />
+        }
+      >
+        <Route path="operator-list" element={<OperatorList />} />
+        <Route path="vending-machines" element={<VendingMachines />} />
+        {/* Add more routes as needed */}
+      </Route>
+      {/* /admin/administration */}
+      <Route
+        path="/administration"
+        element={
+          <AdminLayout
+            sidebarOpen={sidebarOpen}
+            setSidebarOpen={setSidebarOpen}
+          />
+        }
+      >
+        <Route path="operators-management" element={<OperatorsManagement />} />
+        <Route
+          path="vending-machines-management"
+          element={<VendingMachineManagement />}
+        />
+        {/* Add more routes as needed */}
+      </Route>
+      {/* /admin/card-parameters */}
+      <Route
+        path="/card-parameters"
+        element={
+          <AdminLayout
+            sidebarOpen={sidebarOpen}
+            setSidebarOpen={setSidebarOpen}
+          />
+        }
+      >
+        <Route path="card-user-management" element={<CardUserManagement />} />
+        <Route path="card-association" element={<CardAssociation />} />
+        {/* Add more routes as needed */}
+      </Route>
+      {/* /admin/reports */}
+      <Route
+        path="/reports"
+        element={
+          <AdminLayout
+            sidebarOpen={sidebarOpen}
+            setSidebarOpen={setSidebarOpen}
+          />
+        }
+      >
+        <Route path="operator-reports" element={<OperatorReports />} />
+        <Route path="machine-reports" element={<MachineReports />} />
+        {/* Add more routes as needed */}
+      </Route>
+      {/* Fallback route for 404 */}
+      <Route path="*" element={<NotFound />} />
+    </Routes>
+  );
+}
+
+export default App;
