@@ -1,8 +1,41 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { HiOutlinePlusSm } from "react-icons/hi";
-import MachineTable from "../../components/dashboard/MachineTable";
+import { useDispatch, useSelector } from "react-redux";
+import MachineTable from "../../components/dashboard/machine/MachineTable";
+import { getVendingMachines } from "../../store/vendingMachine/VendingMachineThunk";
+import { ImSpinner8 } from "react-icons/im";
+import AddMachineModal from "../../components/dashboard/machine/AddMachineModal";
 
 const VendingMachines = () => {
+  const [addMachineModal, setAddMachineModal] = useState(false);
+  const { vendingMachines, getVendingMachineLoader } = useSelector(
+    (state) => state.vendingMachine
+  );
+  const dispatch = useDispatch();
+
+  const addClicked = () => {
+    setAddMachineModal(true);
+  };
+  const handleOnClose = () => {
+    setAddMachineModal(false);
+  };
+  const handleOnSave = () => {
+    dispatch(
+      getVendingMachines({
+        onSuccess: (data) => {},
+        onError: (data) => {},
+      })
+    );
+  };
+  useEffect(() => {
+    dispatch(
+      getVendingMachines({
+        onSuccess: (data) => {},
+        onError: (data) => {},
+      })
+    );
+  }, []);
+
   return (
     <div>
       <div className="sm:flex sm:justify-between sm:items-center mb-8">
@@ -19,7 +52,7 @@ const VendingMachines = () => {
             // onChange={onFilterTextChange}
           />
           <button
-            // onClick={addClicked}
+            onClick={addClicked}
             className="py-2 px-4 bg-gray-900 text-gray-100 hover:bg-gray-800 dark:bg-gray-100 dark:text-gray-800 dark:hover:bg-white rounded-md transition duration-200"
           >
             <div className="flex items-center gap-1">
@@ -31,8 +64,19 @@ const VendingMachines = () => {
       </div>
       <div className="grid grid-cols-12 gap-6">
         {/* Table (Top Channels) */}
-        <MachineTable />
+        {getVendingMachineLoader ? (
+          <div className="col-span-12 flex justify-center items-center h-96">
+            <ImSpinner8 className="spinning-icon animate-spin text-4xl" />
+          </div>
+        ) : (
+          <MachineTable vendingMachines={vendingMachines} />
+        )}
       </div>
+      <AddMachineModal
+        isOpen={addMachineModal}
+        onClose={handleOnClose}
+        onSave={handleOnSave}
+      />
     </div>
   );
 };

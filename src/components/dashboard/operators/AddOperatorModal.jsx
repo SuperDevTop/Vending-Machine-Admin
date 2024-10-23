@@ -1,18 +1,18 @@
 import React, { useState } from "react";
-import { useThemeProvider } from "../../utils/ThemeContext";
+import { useThemeProvider } from "../../../utils/ThemeContext";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { AddOperatorSchema } from "../../schemas/index";
+import { AddOperatorSchema } from "../../../schemas/index";
 import { IoClose } from "react-icons/io5";
 import { useDispatch, useSelector } from "react-redux";
 import { PhoneInput } from "react-international-phone";
 import "react-international-phone/style.css";
 import { nanoid } from "nanoid";
-import { addOperator } from "../../store/operator/operatorThunk";
+import { addOperator } from "../../../store/operator/operatorThunk";
 import { ImSpinner8 } from "react-icons/im";
 
 const AddOperatorModal = ({ isOpen, onSave, onClose }) => {
-  const { currentTheme, changeCurrentTheme } = useThemeProvider();
+  const { currentTheme } = useThemeProvider();
   const dispatch = useDispatch();
   const { addOperatorsLoader } = useSelector((state) => state.operator);
 

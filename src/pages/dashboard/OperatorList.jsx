@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
-import AddOperatorModal from "../../components/dashboard/AddOperatorModal";
+import AddOperatorModal from "../../components/dashboard/operators/AddOperatorModal";
 import { HiOutlinePlusSm } from "react-icons/hi";
-import OperatorTable from "../../components/dashboard/OperatorTable";
+import OperatorTable from "../../components/dashboard/operators/OperatorTable";
 import { useDispatch, useSelector } from "react-redux";
 import { getOperators } from "../../store/operator/operatorThunk";
 import { ImSpinner8 } from "react-icons/im";

@@ -1,7 +1,7 @@
 import React from "react";
 import { IoClose } from "react-icons/io5";
 import { useDispatch, useSelector } from "react-redux";
-import { deleteOperator } from "../../store/operator/operatorThunk";
+import { deleteOperator } from "../../../store/operator/operatorThunk";
 import { ImSpinner8 } from "react-icons/im";
 
 const DeleteOperatorModal = ({

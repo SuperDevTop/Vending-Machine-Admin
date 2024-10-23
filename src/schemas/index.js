@@ -39,3 +39,30 @@ export const EditOperatorSchema = z.object({
   }),
   status: z.boolean().optional(),
 });
+
+export const AddMachineSchema = z.object({
+  machineName: z.string({
+    message: "Machine name is required",
+  }),
+  description: z.string({
+    message: "Description is required",
+  }),
+  location: z.string({
+    message: "Location is required",
+  }),
+  machineType: z.string().optional(),
+});
+
+export const EditMachineSchema = z.object({
+  machineName: z.string({
+    message: "Machine name is required",
+  }),
+  description: z.string({
+    message: "Description is required",
+  }),
+  location: z.string({
+    message: "Location is required",
+  }),
+  machineType: z.string().optional(),
+  status: z.boolean().optional(),
+});

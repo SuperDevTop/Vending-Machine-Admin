@@ -1,43 +1,44 @@
 import React, { useState } from "react";
-import EditOperatorModal from "./EditOperatorModal";
-import DeleteOperatorModal from "./DeleteOperatorModal";
-import { getOperators } from "../../store/operator/operatorThunk";
 import { useDispatch } from "react-redux";
+import EditMachineModal from "./EditMachineModal";
+import DeleteMachineModal from "./DeleteMachineModal";
+import { getVendingMachines } from "../../../store/vendingMachine/VendingMachineThunk";
 
-const OperatorTable = ({ operators }) => {
+
+const MachineTable = ({ vendingMachines }) => {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-  const [selectedOperator, setSelectedOperator] = useState(null);
+  const [selectedMachine, setSelectedMachine] = useState(null);
   const [selectedId, setSelectedId] = useState(null);
   const dispatch = useDispatch();
 
   // Function to handle edit
   const handleEdit = (id, operator) => {
-    setSelectedOperator(operator);
+    setSelectedMachine(operator);
     setSelectedId(id);
     setIsEditModalOpen(true);
   };
 
-  const handleDelete = (id,operator) => {
+  const handleDelete = (id, operator) => {
     setSelectedId(id);
-    setSelectedOperator(operator);
+    setSelectedMachine(operator);
     setIsDeleteModalOpen(true);
   };
 
   const handleEditCloseModal = () => {
     setIsEditModalOpen(false);
-    setSelectedOperator(null);
+    setSelectedMachine(null);
     setSelectedId(null);
   };
 
   const handleCloseDeleteModal = () => {
     setIsDeleteModalOpen(false);
-    setSelectedOperator(null);
+    setSelectedMachine(null);
     setSelectedId(null);
   };
   const handleOnSaveModal = () => {
     dispatch(
-      getOperators({
+      getVendingMachines({
         onSuccess: (data) => {},
         onError: (data) => {},
       })
@@ -46,7 +47,7 @@ const OperatorTable = ({ operators }) => {
 
   const handleOnDeleteModal = () => {
     dispatch(
-      getOperators({
+      getVendingMachines({
         onSuccess: (data) => {},
         onError: (data) => {},
       })
@@ -57,7 +58,7 @@ const OperatorTable = ({ operators }) => {
       <div className="col-span-full xl:col-span-12 bg-white dark:bg-gray-800 shadow-sm rounded-xl">
         <header className="px-5 py-4 border-b border-gray-100 dark:border-gray-700/60">
           <h2 className="font-semibold text-gray-800 dark:text-gray-100">
-            Operators
+            Vending Machines
           </h2>
         </header>
         <div className="p-3">
@@ -68,31 +69,21 @@ const OperatorTable = ({ operators }) => {
               <thead className="text-xs uppercase text-gray-400 dark:text-gray-500 bg-gray-50 dark:bg-gray-700 dark:bg-opacity-50 rounded-sm">
                 <tr>
                   <th className="p-2">
-                    <div className="font-semibold text-left truncate">
-                      First Name
-                    </div>
+                    <div className="font-semibold text-left truncate">Name</div>
                   </th>
                   <th className="p-2">
                     <div className="font-semibold text-left truncate">
-                      Last Name
+                      Location
                     </div>
                   </th>
                   <th className="p-2">
-                    <div className="font-semibold text-left truncate">
-                      Email
-                    </div>
-                  </th>
-                  <th className="p-2">
-                    <div className="font-semibold text-left truncate">
-                      Phone Number
-                    </div>
+                    <div className="font-semibold text-left truncate">Type</div>
                   </th>
                   <th className="p-2">
                     <div className="font-semibold text-left truncate">
                       Status
                     </div>
                   </th>
-
                   <th className="p-2">
                     <div className="font-semibold text-center truncate">
                       Actions
@@ -102,46 +93,46 @@ const OperatorTable = ({ operators }) => {
               </thead>
               {/* Table body */}
               <tbody className="text-sm font-medium divide-y divide-gray-100 dark:divide-gray-700/60">
-                {/* Row */}
-                {operators &&
-                  Object.entries(operators).map(([id, operator]) => {
+                {vendingMachines &&
+                  Object.entries(vendingMachines).map(([id, machine]) => {
                     return (
                       <tr key={id}>
                         <td className="p-2">
                           <div className="text-gray-800 dark:text-gray-100">
-                            {operator?.fname}
+                            {machine?.machineName}
                           </div>
                         </td>
                         <td className="p-2">
                           <div className="text-gray-800 dark:text-gray-100 truncate">
-                            {operator?.lname}
+                            {machine?.location}
                           </div>
                         </td>
                         <td className="p-2">
                           <div className="text-gray-800 dark:text-gray-100 truncate">
-                            {operator?.email}
+                            {machine?.machineType}
                           </div>
                         </td>
                         <td className="p-2">
                           <div className="text-gray-800 dark:text-gray-100 truncate">
-                            {operator?.phoneNumber}
-                          </div>
-                        </td>
-                        <td className="p-2">
-                          <div className="text-gray-800 dark:text-gray-100 truncate">
-                            {operator?.status == true ? "Active" : "Inactive"}
+                            {machine?.status == true ? "Active" : "Inactive"}
                           </div>
                         </td>
                         <td className="p-2">
                           <div className="flex items-center justify-center gap-2">
+                            {/* <button
+                              // onClick={addClicked}
+                              className="py-2 px-4 w-20 bg-gray-900 text-gray-100 hover:bg-gray-800 dark:bg-gray-100 dark:text-gray-800 dark:hover:bg-white rounded-md transition duration-200"
+                            >
+                              <h3>Details</h3>
+                            </button> */}
                             <button
-                              onClick={() => handleEdit(id, operator)}
+                              onClick={() => handleEdit(id, machine)}
                               className="py-2 px-4 w-20 bg-gray-900 text-gray-100 hover:bg-gray-800 dark:bg-gray-100 dark:text-gray-800 dark:hover:bg-white rounded-md transition duration-200"
                             >
                               <h3>Edit</h3>
                             </button>
                             <button
-                              onClick={() => handleDelete(id, operator)}
+                              onClick={() => handleDelete(id, machine)}
                               className="py-2 px-4 w-20 bg-gray-900 text-gray-100 hover:bg-gray-800 dark:bg-gray-100 dark:text-gray-800 dark:hover:bg-white rounded-md transition duration-200"
                             >
                               <h3>Delete</h3>
@@ -157,26 +148,26 @@ const OperatorTable = ({ operators }) => {
         </div>
       </div>
       {isEditModalOpen && (
-        <EditOperatorModal
+        <EditMachineModal
           isOpen={isEditModalOpen}
           onClose={handleEditCloseModal}
-          onSave={handleOnDeleteModal}
-          operator={selectedOperator}
+          onSave={handleOnSaveModal}
+          machine={selectedMachine}
           id={selectedId}
         />
       )}
 
       {isDeleteModalOpen && (
-        <DeleteOperatorModal
+        <DeleteMachineModal
           isOpen={isDeleteModalOpen}
           onClose={handleCloseDeleteModal}
-          onDelete={handleOnSaveModal}
-          operatorId={selectedId}
-          operator={selectedOperator}
+          onDelete={handleOnDeleteModal}
+          machineId={selectedId}
+          machine={selectedMachine}
         />
       )}
     </>
   );
 };
 
-export default OperatorTable;
+export default MachineTable;
