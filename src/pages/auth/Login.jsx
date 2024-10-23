@@ -9,6 +9,7 @@ import { loginUser } from "../../store/user/userThunk";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { ImSpinner8 } from "react-icons/im";
+import withAuthRedirect from '../../components/withAuthRedirect';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -128,4 +129,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default withAuthRedirect(Login);
