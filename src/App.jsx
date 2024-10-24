@@ -2,8 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Routes, Route, useLocation } from "react-router-dom";
 import OperatorList from "./pages/dashboard/OperatorList";
 import VendingMachines from "./pages/dashboard/VendingMachines";
-import VendingMachineManagement from "./pages/administration/VendingMachineManagement";
-import OperatorsManagement from "./pages/administration/OperatorsManagement";
+import ProductManagement from "./pages/dashboard/ProductManagement";
 import CardUserManagement from "./pages/card_parameters/CardUserManagement";
 import CardAssociation from "./pages/card_parameters/CardAssociation";
 import OperatorReports from "./pages/reports/OperatorReports";
@@ -54,28 +53,7 @@ function App() {
           >
             <Route path="operator-list" element={<OperatorList />} />
             <Route path="vending-machines" element={<VendingMachines />} />
-            {/* Add more routes as needed */}
-          </Route>
-          {/* /admin/administration */}
-          <Route
-            path="/administration"
-            element={
-              <ProtectedRoute>
-                <AdminLayout
-                  sidebarOpen={sidebarOpen}
-                  setSidebarOpen={setSidebarOpen}
-                />
-              </ProtectedRoute>
-            }
-          >
-            <Route
-              path="operators-management"
-              element={<OperatorsManagement />}
-            />
-            <Route
-              path="vending-machines-management"
-              element={<VendingMachineManagement />}
-            />
+            <Route path="product-management" element={<ProductManagement />} />
             {/* Add more routes as needed */}
           </Route>
           {/* /admin/card-parameters */}
