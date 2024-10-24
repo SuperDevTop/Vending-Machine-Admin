@@ -66,3 +66,23 @@ export const EditMachineSchema = z.object({
   machineType: z.string().optional(),
   status: z.boolean().optional(),
 });
+
+export const AddProductSchema = z.object({
+  productName: z.string({
+    message: "Product Name is required",
+  }),
+  price: z
+    .string({
+      required_error: "Price is required",
+    })
+    .regex(/^\d+(\.\d+)?$/, {
+      message: "Price must be a valid floating-point number",
+    }),
+  inventory: z
+    .string({
+      message: "Inventory is required",
+    })
+    .regex(/^\d+$/, {
+      message: "Inventory must contain only digits",
+    }),
+});
