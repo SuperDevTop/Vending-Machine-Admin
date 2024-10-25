@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import EditMachineModal from "./EditMachineModal";
 import DeleteMachineModal from "./DeleteMachineModal";
 import { getVendingMachines } from "../../../store/vendingMachine/VendingMachineThunk";
-
+import { useNavigate } from "react-router-dom";
 
 const MachineTable = ({ vendingMachines }) => {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
@@ -11,6 +11,7 @@ const MachineTable = ({ vendingMachines }) => {
   const [selectedMachine, setSelectedMachine] = useState(null);
   const [selectedId, setSelectedId] = useState(null);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   // Function to handle edit
   const handleEdit = (id, operator) => {
@@ -23,6 +24,10 @@ const MachineTable = ({ vendingMachines }) => {
     setSelectedId(id);
     setSelectedMachine(operator);
     setIsDeleteModalOpen(true);
+  };
+
+  const handleDetails = (id) => {
+    navigate(`/dashboard/vending-machines/${id}`);
   };
 
   const handleEditCloseModal = () => {
@@ -119,12 +124,12 @@ const MachineTable = ({ vendingMachines }) => {
                         </td>
                         <td className="p-2">
                           <div className="flex items-center justify-center gap-2">
-                            {/* <button
-                              // onClick={addClicked}
+                            <button
+                              onClick={()=> handleDetails(id)}
                               className="py-2 px-4 w-20 bg-gray-900 text-gray-100 hover:bg-gray-800 dark:bg-gray-100 dark:text-gray-800 dark:hover:bg-white rounded-md transition duration-200"
                             >
                               <h3>Details</h3>
-                            </button> */}
+                            </button>
                             <button
                               onClick={() => handleEdit(id, machine)}
                               className="py-2 px-4 w-20 bg-gray-900 text-gray-100 hover:bg-gray-800 dark:bg-gray-100 dark:text-gray-800 dark:hover:bg-white rounded-md transition duration-200"

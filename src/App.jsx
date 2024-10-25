@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { Routes, Route, useLocation } from "react-router-dom";
 import OperatorList from "./pages/dashboard/OperatorList";
 import VendingMachines from "./pages/dashboard/VendingMachines";
+import VendingMachineDetails from "./pages/dashboard/VendingMachineDetails";
+import ProductDetails from "./pages/dashboard/ProductDetails";
 import ProductManagement from "./pages/dashboard/ProductManagement";
 import CardUserManagement from "./pages/card_parameters/CardUserManagement";
 import CardAssociation from "./pages/card_parameters/CardAssociation";
@@ -91,6 +93,19 @@ function App() {
             <Route path="machine-reports" element={<MachineReports />} />
             {/* Add more routes as needed */}
           </Route>
+          {/* Vending Machine Details Page */}
+          <Route
+            exact
+            path="/dashboard/vending-machines/:machineId"
+            element={<VendingMachineDetails />}
+          />
+          {/* Product Details Page */}
+          <Route
+            exact
+            path="/dashboard/product-management/:productId"
+            element={<ProductDetails />}
+          />
+
           {/* Fallback route for 404 */}
           <Route path="*" element={<NotFound />} />
         </Routes>

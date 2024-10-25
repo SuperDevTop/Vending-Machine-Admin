@@ -8,6 +8,7 @@ import { ImSpinner8 } from "react-icons/im";
 
 const ProductManagement = () => {
   const [addProductModal, setAddProductModal] = useState(false);
+  const [filteredProduct, setFilteredProducts] = useState(null);
   const { products, getProductsLoader } = useSelector((state) => state.product);
   const dispatch = useDispatch();
 
@@ -20,19 +21,31 @@ const ProductManagement = () => {
   const handleOnSave = () => {
     dispatch(
       getProducts({
-        onSuccess: (data) => {},
-        onError: (data) => {},
+        onSuccess: () => {
+          setFilteredProducts(products);
+        },
+        onError: () => {},
       })
     );
   };
+
   useEffect(() => {
     dispatch(
       getProducts({
-        onSuccess: (data) => {},
-        onError: (data) => {},
+        onSuccess: () => {
+          setFilteredProducts(products);
+        },
+        onError: () => {},
       })
     );
   }, []);
+  
+  const handleSearch = (value) => {
+    const filtered = Object.entries(products).filter(([id, product]) =>
+      product.productName.toLowerCase().includes(value.toLowerCase())
+    );
+    setFilteredProducts(Object.fromEntries(filtered));
+  };
 
   return (
     <div>
@@ -42,11 +55,12 @@ const ProductManagement = () => {
             Product List
           </h1>
         </div>
-        <div className=" flex justify-center items-center gap-2 lg:gap-5">
+        <div className="flex justify-center items-center gap-2 lg:gap-5">
           <input
             className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-100"
             type="text"
             placeholder="Search..."
+            onChange={(e) => handleSearch(e.target.value)}
           />
           <button
             onClick={addClicked}
@@ -65,7 +79,7 @@ const ProductManagement = () => {
             <ImSpinner8 className="spinning-icon animate-spin text-4xl" />
           </div>
         ) : (
-          <ProductTable products={products} />
+          <ProductTable products={filteredProduct} />
         )}
       </div>
       <AddProductModal

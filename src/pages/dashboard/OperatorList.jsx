@@ -8,6 +8,7 @@ import { ImSpinner8 } from "react-icons/im";
 
 const OperatorList = () => {
   const [addOperatorModal, setAddOperatorModal] = useState(false);
+  const [filteredOperator, setFilteredOperators] = useState(null);
   const { operators, getOperatorsLoader } = useSelector(
     (state) => state.operator
   );
@@ -22,7 +23,9 @@ const OperatorList = () => {
   const handleOnSave = () => {
     dispatch(
       getOperators({
-        onSuccess: (data) => {},
+        onSuccess: (data) => {
+          setFilteredOperators(operators);
+        },
         onError: (data) => {},
       })
     );
@@ -30,11 +33,22 @@ const OperatorList = () => {
   useEffect(() => {
     dispatch(
       getOperators({
-        onSuccess: (data) => {},
+        onSuccess: (data) => {
+          setFilteredOperators(operators);
+        },
         onError: (data) => {},
       })
     );
   }, []);
+
+  const handleSearch = (value) => {
+    const filtered = Object.entries(operators).filter(
+      ([id, operator]) =>
+        operator.fname.toLowerCase().includes(value.toLowerCase()) ||
+        operator.lname.toLowerCase().includes(value.toLowerCase())
+    );
+    setFilteredOperators(Object.fromEntries(filtered));
+  };
 
   return (
     <div>
@@ -49,6 +63,7 @@ const OperatorList = () => {
             className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-100"
             type="text"
             placeholder="Search..."
+            onChange={(e) => handleSearch(e.target.value)}
           />
           <button
             onClick={addClicked}
@@ -67,7 +82,7 @@ const OperatorList = () => {
             <ImSpinner8 className="spinning-icon animate-spin text-4xl" />
           </div>
         ) : (
-          <OperatorTable operators={operators} />
+          <OperatorTable operators={filteredOperator} />
         )}
       </div>
       <AddOperatorModal

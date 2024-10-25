@@ -3,6 +3,7 @@ import EditProductModal from "./EditProductModal";
 import DeleteProductModal from "./DeleteProductModal";
 import { getProducts } from "../../../store/product/productThunk";
 import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 const ProductTable = ({ products }) => {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
@@ -10,12 +11,17 @@ const ProductTable = ({ products }) => {
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [selectedId, setSelectedId] = useState(null);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   // Function to handle edit
   const handleEdit = (id, product) => {
     setSelectedProduct(product);
     setSelectedId(id);
     setIsEditModalOpen(true);
+  };
+
+  const handleDetails = (id) => {
+    navigate(`/dashboard/product-management/${id}`);
   };
 
   const handleDelete = (id, product) => {
@@ -121,6 +127,12 @@ const ProductTable = ({ products }) => {
                         </td>
                         <td className="p-2">
                           <div className="flex items-center justify-center gap-2">
+                            <button
+                              onClick={() => handleDetails(id)}
+                              className="py-2 px-4 w-20 bg-gray-900 text-gray-100 hover:bg-gray-800 dark:bg-gray-100 dark:text-gray-800 dark:hover:bg-white rounded-md transition duration-200"
+                            >
+                              <h3>Details</h3>
+                            </button>
                             <button
                               onClick={() => handleEdit(id, product)}
                               className="py-2 px-4 w-20 bg-gray-900 text-gray-100 hover:bg-gray-800 dark:bg-gray-100 dark:text-gray-800 dark:hover:bg-white rounded-md transition duration-200"
