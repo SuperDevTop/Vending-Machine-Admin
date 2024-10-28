@@ -86,3 +86,12 @@ export const AddProductSchema = z.object({
       message: "Inventory must contain only digits",
     }),
 });
+
+
+export const assignProductSchema = z.object({
+  selectedProductId: z.string().nonempty("Please select a product"),
+  creditAmount: z
+    .number({ invalid_type_error: "Credit amount must be a number" })
+    .positive("Credit amount must be greater than 0")
+    .int("Credit amount must be an integer"),
+});

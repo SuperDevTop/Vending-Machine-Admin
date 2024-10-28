@@ -2,20 +2,27 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { AddMachineSchema } from "../../../schemas/index";
-import { IoClose } from "react-icons/io5";
-import { useDispatch, useSelector } from "react-redux";
 import { nanoid } from "nanoid";
-import { addVendingMachine } from "../../../store/vendingMachine/VendingMachineThunk";
-import { updateOperator } from "../../../store/operator/operatorThunk";
+import { useDispatch, useSelector } from "react-redux";
+import { IoClose } from "react-icons/io5";
 import { ImSpinner8 } from "react-icons/im";
 
+// Redux actions
+import { addVendingMachine } from "../../../store/vendingMachine/VendingMachineThunk";
+import { updateOperator } from "../../../store/operator/operatorThunk";
+
 const AddMachineModal = ({ isOpen, onSave, onClose }) => {
+  // Redux hooks
   const dispatch = useDispatch();
-  const { addVendingMachineLoader } = useSelector(
-    (state) => state.vendingMachine
-  );
+  const { addVendingMachineLoader } = useSelector((state) => state.vendingMachine);
   const { operators } = useSelector((state) => state.operator);
 
+  // Local state
+  const [machineType, setMachineType] = useState("");
+  const [operatorID, setOperatorID] = useState("");
+  const [selectedOperator, setSelectedOperator] = useState(null);
+
+  // Form handling
   const {
     register,
     handleSubmit,
@@ -32,10 +39,10 @@ const AddMachineModal = ({ isOpen, onSave, onClose }) => {
     },
   });
 
-  const [machineType, setMachineType] = useState("");
-  const [operatorID, setOperatorID] = useState("");
-  const [selectedOperator, setSelectedOperator] = useState(null);
+  // Early return if modal is not open
+  if (!isOpen) return null;
 
+  // Event handlers
   const handleMachineTypeChange = (event) => {
     const value = event.target.value;
     setMachineType(value);
@@ -49,26 +56,44 @@ const AddMachineModal = ({ isOpen, onSave, onClose }) => {
     setSelectedOperator(operator);
   };
 
-  if (!isOpen) {
-    return null;
-  }
+  const handleClose = () => {
+    reset();
+    onClose();
+    setMachineType("");
+    setOperatorID("");
+    setSelectedOperator(null);
+  };
 
-  // Handle form submission
+  // Form submission handler
   const onSubmit = async (data) => {
     const uniqueId = nanoid();
     const result = AddMachineSchema.safeParse(data);
+
     if (result.success) {
       const payload = {
         ...data,
         status: true,
         operatorId: operatorID,
       };
+
+      const handleSuccess = () => {
+        onSave();
+        handleClose();
+      };
+
+      const handleError = (error) => {
+        console.error("Error:", error);
+        handleClose();
+      };
+
+      // Dispatch add vending machine action
       dispatch(
         addVendingMachine({
           id: uniqueId,
           payload,
           onSuccess: () => {
             if (operatorID && selectedOperator) {
+              // Update operator with new machine
               dispatch(
                 updateOperator({
                   id: operatorID,
@@ -79,153 +104,113 @@ const AddMachineModal = ({ isOpen, onSave, onClose }) => {
                       uniqueId,
                     ],
                   },
-                  onSuccess: () => {
-                    onSave();
-                    onClose();
-                    setOperatorID("");
-                    setSelectedOperator(null);
-                  },
-                  onError: (error) => {
-                    console.error("Error updating operator:", error);
-                    onClose();
-                  },
+                  onSuccess: handleSuccess,
+                  onError: handleError,
                 })
               );
+            } else {
+              handleSuccess();
             }
-            onSave();
-            onClose();
-            reset();
           },
-          onError: () => {
-            onClose();
-            reset();
-          },
+          onError: handleError,
         })
       );
     }
   };
 
+  // UI Components
+  const FormField = ({ label, name, type = "text", children }) => (
+    <div className="flex flex-col mb-2 md:mb-4 items-start">
+      <label className="block text-gray-700 dark:text-gray-300 font-bold mb-2">
+        {label}
+      </label>
+      {children || (
+        <input
+          type={type}
+          {...register(name)}
+          className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-100"
+          placeholder={`Enter your ${name.toLowerCase()}`}
+          required
+        />
+      )}
+      {errors[name] && (
+        <p className="mt-1 text-sm text-destructive">{errors[name].message}</p>
+      )}
+    </div>
+  );
+
   return (
-    <>
-      <div
-        className="fixed top-0 left-0 right-0 bg-gray-800 bg-opacity-90 flex items-center justify-center md:inset-0 h-[calc(100%-1rem)] max-h-full"
-        style={{ zIndex: 1000 }}
-      >
-        <div className="flex flex-col w-full max-w-3xl max-h-full bg-white dark:bg-gray-800 border dark:border-gray-600 text-center text-xs rounded-lg text-black dark:text-white font-quicksand box-border border-b-[1px] border-solid border-gainsboro overflow-auto">
-          <div className="bg-white dark:bg-gray-800 px-8 py-2 mb-8">
-            <h2 className="flex items-center text-start font-bold left-[29px] text-[18px] text-dimgray">
-              ADD VENDING MACHINE
-              <button type="button" onClick={onClose} className="ml-auto">
-                <IoClose size={30} color="#A0AEC0" />
-              </button>
-            </h2>
-          </div>
-
-          <form
-            className="grid grid-cols-1 md:grid-cols-2 gap-4 p-5"
-            onSubmit={handleSubmit(onSubmit)}
-          >
-            <div className="flex flex-col mb-2 md:mb-4 items-start">
-              <label className="block text-gray-700 dark:text-gray-300 font-bold mb-2">
-                Machine Name
-              </label>
-              <input
-                type="text"
-                {...register("machineName")}
-                className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-100"
-                placeholder="Enter your machine name"
-                required
-              />
-              <p className="mt-1 text-sm text-destructive">
-                {errors?.machineName?.message}
-              </p>
-            </div>
-            <div className="flex flex-col mb-2 md:mb-4 items-start">
-              <label className="block text-gray-700 dark:text-gray-300 font-bold mb-2">
-                Description
-              </label>
-              <input
-                type="text"
-                {...register("description")}
-                className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-100"
-                placeholder="Enter your description"
-                required
-              />
-              <p className="mt-1 text-sm text-destructive">
-                {errors?.description?.message}
-              </p>
-            </div>
-            <div className="flex flex-col mb-2 md:mb-4 items-start">
-              <label className="block text-gray-700 dark:text-gray-300 font-bold mb-2">
-                Location
-              </label>
-              <input
-                type="text"
-                {...register("location")}
-                className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-100"
-                placeholder="Enter your location"
-                required
-              />
-              <p className="mt-1 text-sm text-destructive">
-                {errors?.location?.message}
-              </p>
-            </div>
-            <div className="flex flex-col mb-2 md:mb-4 items-start">
-              <label className="block text-gray-700 dark:text-gray-300 font-bold mb-2">
-                Operator
-              </label>
-              <select
-                value={operatorID}
-                onChange={handleOperatorIDChange}
-                className="w-full p-2 border border-gray-300 dark:border-gray-600 outline-none rounded-md bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-100"
-              >
-                <option value="">Select an operator</option>
-                {operators &&
-                  Object.entries(operators).map(([id, operator]) => (
-                    <option key={id} value={id}>
-                      {operator?.fname} {operator?.lname}
-                    </option>
-                  ))}
-              </select>
-            </div>
-            <div className="flex flex-col mb-2 md:mb-4 items-start">
-              <label className="block text-gray-700 dark:text-gray-300 font-bold mb-2">
-                Machine Type
-              </label>
-              <select
-                value={machineType}
-                onChange={handleMachineTypeChange}
-                className="w-full p-2 border border-gray-300 dark:border-gray-600 outline-none rounded-md bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-100"
-              >
-                <option value="">Select a machine type</option>
-                <option value="Snack">Snack</option>
-                <option value="Beverage">Beverage</option>
-              </select>
-            </div>
-
-            <div className="col-span-1 md:col-span-2 flex justify-center my-0 md:my-6 gap-2">
-              <button
-                onClick={onClose}
-                className="mt-4 w-24 py-2 px-4 text-gray-800 dark:text-gray-100 border dark:border rounded-md transition duration-200"
-              >
-                Cancel
-              </button>
-              <button
-                type="submit"
-                disabled={addVendingMachineLoader}
-                className="mt-4 w-24 py-2 px-4 bg-gray-900 text-gray-100 hover:bg-gray-800 dark:bg-gray-100 dark:text-gray-800 dark:hover:bg-white rounded-md transition duration-200"
-              >
-                {addVendingMachineLoader ? (
-                  <ImSpinner8 className="spinning-icon" />
-                ) : (
-                  "Save"
-                )}
-              </button>
-            </div>
-          </form>
+    <div className="fixed top-0 left-0 right-0 bg-gray-800 bg-opacity-90 flex items-center justify-center md:inset-0 h-[calc(100%-1rem)] max-h-full" style={{ zIndex: 1000 }}>
+      <div className="flex flex-col w-full max-w-3xl max-h-full bg-white dark:bg-gray-800 border dark:border-gray-600 text-center text-xs rounded-lg text-black dark:text-white font-quicksand box-border border-b-[1px] border-solid border-gainsboro overflow-auto">
+        {/* Header */}
+        <div className="bg-white dark:bg-gray-800 px-8 py-2 mb-8">
+          <h2 className="flex items-center text-start font-bold left-[29px] text-[18px] text-dimgray">
+            ADD VENDING MACHINE
+            <button type="button" onClick={handleClose} className="ml-auto">
+              <IoClose size={30} color="#A0AEC0" />
+            </button>
+          </h2>
         </div>
+
+        {/* Form */}
+        <form className="grid grid-cols-1 md:grid-cols-2 gap-4 p-5" onSubmit={handleSubmit(onSubmit)}>
+          <FormField label="Machine Name" name="machineName" />
+          <FormField label="Description" name="description" />
+          <FormField label="Location" name="location" />
+          
+          {/* Operator Select */}
+          <FormField label="Operator">
+            <select
+              value={operatorID}
+              onChange={handleOperatorIDChange}
+              className="w-full p-2 border border-gray-300 dark:border-gray-600 outline-none rounded-md bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-100"
+            >
+              <option value="">Select an operator</option>
+              {operators &&
+                Object.entries(operators).map(([id, operator]) => (
+                  <option key={id} value={id}>
+                    {operator?.fname} {operator?.lname}
+                  </option>
+                ))}
+            </select>
+          </FormField>
+
+          {/* Machine Type Select */}
+          <FormField label="Machine Type">
+            <select
+              value={machineType}
+              onChange={handleMachineTypeChange}
+              className="w-full p-2 border border-gray-300 dark:border-gray-600 outline-none rounded-md bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-100"
+            >
+              <option value="">Select a machine type</option>
+              <option value="Snack">Snack</option>
+              <option value="Beverage">Beverage</option>
+            </select>
+          </FormField>
+
+          {/* Action Buttons */}
+          <div className="col-span-1 md:col-span-2 flex justify-center my-0 md:my-6 gap-2">
+            <button
+              onClick={handleClose}
+              className="mt-4 w-24 py-2 px-4 text-gray-800 dark:text-gray-100 border dark:border rounded-md transition duration-200"
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              disabled={addVendingMachineLoader}
+              className="mt-4 w-24 py-2 px-4 bg-gray-900 text-gray-100 hover:bg-gray-800 dark:bg-gray-100 dark:text-gray-800 dark:hover:bg-white rounded-md transition duration-200"
+            >
+              {addVendingMachineLoader ? (
+                <ImSpinner8 className="spinning-icon" />
+              ) : (
+                "Save"
+              )}
+            </button>
+          </div>
+        </form>
       </div>
-    </>
+    </div>
   );
 };
 
