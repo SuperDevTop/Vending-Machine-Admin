@@ -6,12 +6,14 @@ import storage from "redux-persist/lib/storage";
 import operatorSlice from "./operator/operatorSlice";
 import vendingMachineSlice from "./vendingMachine/VendingMachineSlice";
 import productSlice from "./product/productSlice";
+import cardSlice from "./card/CardSlice";
 
 const reducers = combineReducers({
   user: userSlice,
   operator: operatorSlice,
   vendingMachine: vendingMachineSlice,
   product: productSlice,
+  card: cardSlice,
 });
 
 const persistConfig = {

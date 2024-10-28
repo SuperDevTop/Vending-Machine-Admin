@@ -267,7 +267,7 @@ function Sidebar({ sidebarOpen, setSidebarOpen, variant = "default" }) {
               </SidebarLinkGroup>
               {/* Card Parameters */}
               <SidebarLinkGroup
-                activecondition={pathname.includes("card-parameters")}
+                activecondition={pathname.includes("credit-management")}
               >
                 {(handleClick, open) => {
                   return (
@@ -275,7 +275,7 @@ function Sidebar({ sidebarOpen, setSidebarOpen, variant = "default" }) {
                       <a
                         href="#0"
                         className={`block text-gray-800 dark:text-gray-100 truncate transition duration-150 ${
-                          pathname.includes("card-parameters")
+                          pathname.includes("credit-management")
                             ? ""
                             : "hover:text-gray-900 dark:hover:text-white"
                         }`}
@@ -289,7 +289,7 @@ function Sidebar({ sidebarOpen, setSidebarOpen, variant = "default" }) {
                           <div className="flex items-center">
                             <svg
                               className={`shrink-0 fill-current ${
-                                pathname.includes("card-parameters")
+                                pathname.includes("credit-management")
                                   ? "text-violet-500"
                                   : "text-gray-400 dark:text-gray-500"
                               }`}
@@ -302,7 +302,7 @@ function Sidebar({ sidebarOpen, setSidebarOpen, variant = "default" }) {
                               <path d="M6.068 7.482A2.003 2.003 0 0 0 8 10a2 2 0 1 0-.518-3.932L3.707 2.293a1 1 0 0 0-1.414 1.414l3.775 3.775Z" />
                             </svg>
                             <span className="text-sm font-medium ml-4 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
-                              Card Parameters
+                              Credit Management
                             </span>
                           </div>
                           <div className="flex shrink-0 ml-2">
@@ -322,7 +322,7 @@ function Sidebar({ sidebarOpen, setSidebarOpen, variant = "default" }) {
                           <li className="mb-1 last:mb-0">
                             <NavLink
                               end
-                              to="/card-parameters/card-user-management"
+                              to="/credit-management/user-management"
                               className={({ isActive }) =>
                                 "block transition duration-150 truncate " +
                                 (isActive
@@ -331,14 +331,14 @@ function Sidebar({ sidebarOpen, setSidebarOpen, variant = "default" }) {
                               }
                             >
                               <span className="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
-                                Card User Management
+                                User Management
                               </span>
                             </NavLink>
                           </li>
-                          <li className="mb-1 last:mb-0">
+                          {/* <li className="mb-1 last:mb-0">
                             <NavLink
                               end
-                              to="/card-parameters/card-association"
+                              to="/credit-management/card-association"
                               className={({ isActive }) =>
                                 "block transition duration-150 truncate " +
                                 (isActive
@@ -350,7 +350,7 @@ function Sidebar({ sidebarOpen, setSidebarOpen, variant = "default" }) {
                                 Operator/Card Association
                               </span>
                             </NavLink>
-                          </li>
+                          </li> */}
                         </ul>
                       </div>
                     </React.Fragment>

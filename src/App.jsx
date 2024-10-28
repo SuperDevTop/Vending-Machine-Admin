@@ -5,8 +5,8 @@ import VendingMachines from "./pages/dashboard/VendingMachines";
 import VendingMachineDetails from "./pages/dashboard/VendingMachineDetails";
 import ProductDetails from "./pages/dashboard/ProductDetails";
 import ProductManagement from "./pages/dashboard/ProductManagement";
-import CardUserManagement from "./pages/card_parameters/CardUserManagement";
-import CardAssociation from "./pages/card_parameters/CardAssociation";
+import UserManagement from "./pages/credit_management/UserManagement";
+import CardAssociation from "./pages/credit_management/CardAssociation";
 import OperatorReports from "./pages/reports/OperatorReports";
 import MachineReports from "./pages/reports/MachineReports";
 import AdminLayout from "./layout/AdminLayout";
@@ -60,7 +60,7 @@ function App() {
           </Route>
           {/* /admin/card-parameters */}
           <Route
-            path="/card-parameters"
+            path="/credit-management"
             element={
               <ProtectedRoute>
                 <AdminLayout
@@ -71,10 +71,10 @@ function App() {
             }
           >
             <Route
-              path="card-user-management"
-              element={<CardUserManagement />}
+              path="user-management"
+              element={<UserManagement />}
             />
-            <Route path="card-association" element={<CardAssociation />} />
+            {/* <Route path="card-association" element={<CardAssociation />} /> */}
             {/* Add more routes as needed */}
           </Route>
           {/* /admin/reports */}

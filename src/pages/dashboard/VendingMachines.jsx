@@ -6,6 +6,7 @@ import { getVendingMachines } from "../../store/vendingMachine/VendingMachineThu
 import { ImSpinner8 } from "react-icons/im";
 import { IoMdClose } from "react-icons/io";
 import AddMachineModal from "../../components/dashboard/machine/AddMachineModal";
+import { FaFilterCircleXmark } from "react-icons/fa6";
 
 const VendingMachines = () => {
   const [addMachineModal, setAddMachineModal] = useState(false);
@@ -105,10 +106,7 @@ const VendingMachines = () => {
                 onClick={handleRemoveFilters}
                 className="py-2 px-4 bg-gray-900 text-gray-100 hover:bg-gray-800 dark:bg-gray-100 dark:text-gray-800 dark:hover:bg-white rounded-md transition duration-200"
               >
-                <div className="flex items-center gap-1">
-                  <IoMdClose className="text-2xl" />
-                  <h3>Filters</h3>
-                </div>
+                <FaFilterCircleXmark className="text-2xl" />
               </button>
             )}
           </div>
