@@ -5,7 +5,7 @@ import DeleteMachineModal from "./DeleteMachineModal";
 import { getVendingMachines } from "../../../store/vendingMachine/VendingMachineThunk";
 import { useNavigate } from "react-router-dom";
 
-const MachineTable = ({ vendingMachines }) => {
+const MachineTable = ({ vendingMachines, setFilteredMachines }) => {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [selectedMachine, setSelectedMachine] = useState(null);
@@ -44,7 +44,9 @@ const MachineTable = ({ vendingMachines }) => {
   const handleOnSaveModal = () => {
     dispatch(
       getVendingMachines({
-        onSuccess: (data) => {},
+        onSuccess: (data) => {
+          setFilteredMachines(data);
+        },
         onError: (data) => {},
       })
     );
@@ -53,7 +55,9 @@ const MachineTable = ({ vendingMachines }) => {
   const handleOnDeleteModal = () => {
     dispatch(
       getVendingMachines({
-        onSuccess: (data) => {},
+        onSuccess: (data) => {
+          setFilteredMachines(data);
+        },
         onError: (data) => {},
       })
     );
@@ -63,7 +67,7 @@ const MachineTable = ({ vendingMachines }) => {
       <div className="col-span-full xl:col-span-12 bg-white dark:bg-gray-800 shadow-sm rounded-xl">
         <header className="px-5 py-4 border-b border-gray-100 dark:border-gray-700/60">
           <h2 className="font-semibold text-gray-800 dark:text-gray-100">
-            Vending Machines
+            Machines
           </h2>
         </header>
         <div className="p-3">
@@ -80,9 +84,6 @@ const MachineTable = ({ vendingMachines }) => {
                     <div className="font-semibold text-left truncate">
                       Location
                     </div>
-                  </th>
-                  <th className="p-2">
-                    <div className="font-semibold text-left truncate">Type</div>
                   </th>
                   <th className="p-2">
                     <div className="font-semibold text-left truncate">
@@ -114,18 +115,13 @@ const MachineTable = ({ vendingMachines }) => {
                         </td>
                         <td className="p-2">
                           <div className="text-gray-800 dark:text-gray-100 truncate">
-                            {machine?.machineType}
-                          </div>
-                        </td>
-                        <td className="p-2">
-                          <div className="text-gray-800 dark:text-gray-100 truncate">
                             {machine?.status == true ? "Active" : "Inactive"}
                           </div>
                         </td>
                         <td className="p-2">
                           <div className="flex items-center justify-center gap-2">
                             <button
-                              onClick={()=> handleDetails(id)}
+                              onClick={() => handleDetails(id)}
                               className="py-2 px-4 w-20 bg-gray-900 text-gray-100 hover:bg-gray-800 dark:bg-gray-100 dark:text-gray-800 dark:hover:bg-white rounded-md transition duration-200"
                             >
                               <h3>Details</h3>

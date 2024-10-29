@@ -24,6 +24,7 @@ export const getProducts = createAsyncThunk(
       const snapshot = await get(operatorsRef);
 
       if (!snapshot.exists()) {
+        onSuccess({});
         return {};
       }
 

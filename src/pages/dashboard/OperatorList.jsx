@@ -24,22 +24,12 @@ const OperatorList = () => {
     dispatch(
       getOperators({
         onSuccess: (data) => {
-          setFilteredOperators(operators);
+          setFilteredOperators(data);
         },
         onError: (data) => {},
       })
     );
   };
-  useEffect(() => {
-    dispatch(
-      getOperators({
-        onSuccess: (data) => {
-          setFilteredOperators(operators);
-        },
-        onError: (data) => {},
-      })
-    );
-  }, []);
 
   const handleSearch = (value) => {
     const filtered = Object.entries(operators).filter(
@@ -50,12 +40,23 @@ const OperatorList = () => {
     setFilteredOperators(Object.fromEntries(filtered));
   };
 
+  useEffect(() => {
+    dispatch(
+      getOperators({
+        onSuccess: (data) => {
+          setFilteredOperators(data);
+        },
+        onError: (data) => {},
+      })
+    );
+  }, []);
+
   return (
     <div>
       <div className="sm:flex sm:justify-between sm:items-center mb-8">
         <div className="mb-4 sm:mb-0">
           <h1 className="text-2xl md:text-3xl text-gray-800 dark:text-gray-100 font-bold">
-            Operator List
+            Operators
           </h1>
         </div>
         <div className=" flex justify-center items-center gap-2 lg:gap-5">
@@ -82,7 +83,7 @@ const OperatorList = () => {
             <ImSpinner8 className="spinning-icon animate-spin text-4xl" />
           </div>
         ) : (
-          <OperatorTable operators={filteredOperator} />
+          <OperatorTable operators={filteredOperator} setFilteredOperators={setFilteredOperators}/>
         )}
       </div>
       <AddOperatorModal

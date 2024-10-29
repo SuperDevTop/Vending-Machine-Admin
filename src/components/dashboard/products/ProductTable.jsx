@@ -5,7 +5,7 @@ import { getProducts } from "../../../store/product/productThunk";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
-const ProductTable = ({ products }) => {
+const ProductTable = ({ products, setFilteredProducts }) => {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
@@ -44,8 +44,14 @@ const ProductTable = ({ products }) => {
   const handleOnSaveModal = () => {
     dispatch(
       getProducts({
-        onSuccess: (data) => {},
-        onError: (data) => {},
+        onSuccess: (data) => {
+          console.log("onSuccess",data);
+          setFilteredProducts(data);
+        },
+        onError: (data) => {
+          console.log("onError",data);
+          
+        },
       })
     );
   };
@@ -53,7 +59,9 @@ const ProductTable = ({ products }) => {
   const handleOnDeleteModal = () => {
     dispatch(
       getProducts({
-        onSuccess: (data) => {},
+        onSuccess: (data) => {
+          setFilteredProducts(data);
+        },
         onError: (data) => {},
       })
     );
@@ -78,17 +86,17 @@ const ProductTable = ({ products }) => {
                   </th>
                   <th className="p-2">
                     <div className="font-semibold text-left truncate">
-                      Category
-                    </div>
-                  </th>
-                  <th className="p-2">
-                    <div className="font-semibold text-left truncate">
                       Inventory
                     </div>
                   </th>
                   <th className="p-2">
                     <div className="font-semibold text-left truncate">
                       Price
+                    </div>
+                  </th>
+                  <th className="p-2">
+                    <div className="font-semibold text-left truncate">
+                      Slot Number
                     </div>
                   </th>
                   <th className="p-2">
@@ -112,17 +120,17 @@ const ProductTable = ({ products }) => {
                         </td>
                         <td className="p-2">
                           <div className="text-gray-800 dark:text-gray-100 truncate">
-                            {product?.category}
-                          </div>
-                        </td>
-                        <td className="p-2">
-                          <div className="text-gray-800 dark:text-gray-100 truncate">
                             {product?.inventory}
                           </div>
                         </td>
                         <td className="p-2">
                           <div className="text-gray-800 dark:text-gray-100 truncate">
                             {product?.price}
+                          </div>
+                        </td>
+                        <td className="p-2">
+                          <div className="text-gray-800 dark:text-gray-100 truncate">
+                            {product?.slotNumber}
                           </div>
                         </td>
                         <td className="p-2">

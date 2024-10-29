@@ -27,20 +27,10 @@ const UserManagement = () => {
   //   };
   //   await set(ref(db, `users/${uniqueId}`), payload);
   // };
+  const dispatch = useDispatch();
+
   const { users, getUsersLoader } = useSelector((state) => state.card);
   const [filteredUsers, setFilteredUsers] = useState(null);
-  const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(
-      getUsers({
-        onSuccess: (data) => {
-          setFilteredUsers(users);
-        },
-        onError: (data) => {},
-      })
-    );
-  }, []);
-
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedUserId, setSelectedUserId] = useState(null);
   const [selectedUser, setSelectedUser] = useState(null);
@@ -65,12 +55,23 @@ const UserManagement = () => {
     dispatch(
       getUsers({
         onSuccess: (data) => {
-          setFilteredUsers(users);
+          setFilteredUsers(data);
         },
         onError: (data) => {},
       })
     );
   };
+
+  useEffect(() => {
+    dispatch(
+      getUsers({
+        onSuccess: (data) => {
+          setFilteredUsers(users);
+        },
+        onError: (data) => {},
+      })
+    );
+  }, []);
 
   return (
     <div>
