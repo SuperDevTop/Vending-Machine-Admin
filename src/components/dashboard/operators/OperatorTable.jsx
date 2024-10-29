@@ -4,7 +4,7 @@ import DeleteOperatorModal from "./DeleteOperatorModal";
 import { getOperators } from "../../../store/operator/operatorThunk";
 import { useDispatch } from "react-redux";
 
-const OperatorTable = ({ operators }) => {
+const OperatorTable = ({ operators, setFilteredOperators }) => {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [selectedOperator, setSelectedOperator] = useState(null);
@@ -38,7 +38,9 @@ const OperatorTable = ({ operators }) => {
   const handleOnSaveModal = () => {
     dispatch(
       getOperators({
-        onSuccess: (data) => {},
+        onSuccess: (data) => {
+          setFilteredOperators(data);
+        },
         onError: (data) => {},
       })
     );
@@ -47,7 +49,9 @@ const OperatorTable = ({ operators }) => {
   const handleOnDeleteModal = () => {
     dispatch(
       getOperators({
-        onSuccess: (data) => {},
+        onSuccess: (data) => {
+          setFilteredOperators(data);
+        },
         onError: (data) => {},
       })
     );

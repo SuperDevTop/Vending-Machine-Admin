@@ -18,7 +18,6 @@ const AddMachineModal = ({ isOpen, onSave, onClose }) => {
   const { operators } = useSelector((state) => state.operator);
 
   // Local state
-  const [machineType, setMachineType] = useState("");
   const [operatorID, setOperatorID] = useState("");
   const [selectedOperator, setSelectedOperator] = useState(null);
 
@@ -35,19 +34,12 @@ const AddMachineModal = ({ isOpen, onSave, onClose }) => {
       machineName: "",
       description: "",
       location: "",
-      machineType: "",
     },
   });
 
   // Early return if modal is not open
   if (!isOpen) return null;
 
-  // Event handlers
-  const handleMachineTypeChange = (event) => {
-    const value = event.target.value;
-    setMachineType(value);
-    setValue("machineType", value);
-  };
 
   const handleOperatorIDChange = (event) => {
     const value = event.target.value;
@@ -59,7 +51,6 @@ const AddMachineModal = ({ isOpen, onSave, onClose }) => {
   const handleClose = () => {
     reset();
     onClose();
-    setMachineType("");
     setOperatorID("");
     setSelectedOperator(null);
   };
@@ -175,18 +166,7 @@ const AddMachineModal = ({ isOpen, onSave, onClose }) => {
             </select>
           </FormField>
 
-          {/* Machine Type Select */}
-          <FormField label="Machine Type">
-            <select
-              value={machineType}
-              onChange={handleMachineTypeChange}
-              className="w-full p-2 border border-gray-300 dark:border-gray-600 outline-none rounded-md bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-100"
-            >
-              <option value="">Select a machine type</option>
-              <option value="Snack">Snack</option>
-              <option value="Beverage">Beverage</option>
-            </select>
-          </FormField>
+
 
           {/* Action Buttons */}
           <div className="col-span-1 md:col-span-2 flex justify-center my-0 md:my-6 gap-2">

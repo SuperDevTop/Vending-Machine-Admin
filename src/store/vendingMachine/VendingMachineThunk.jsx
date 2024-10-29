@@ -24,6 +24,7 @@ export const getVendingMachines = createAsyncThunk(
       const snapshot = await get(machinesRef);
 
       if (!snapshot.exists()) {
+        onSuccess({});
         return {};
       }
 

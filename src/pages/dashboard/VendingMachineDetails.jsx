@@ -1,11 +1,13 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import ThemeToggle from "../../components/ThemeToggle";
 import { ImSpinner8 } from "react-icons/im";
+import { IoMdArrowBack } from "react-icons/io";
 
 const VendingMachineDetails = () => {
   const { machineId } = useParams();
+  const navigate = useNavigate();
   const { vendingMachines } = useSelector((state) => state.vendingMachine);
   const { operators } = useSelector((state) => state.operator);
 
@@ -28,6 +30,12 @@ const VendingMachineDetails = () => {
 
       <div className="relative flex min-h-screen flex-col justify-center overflow-hidden bg-gray-50 dark:bg-gray-900 py-6 sm:py-12">
         <div className="relative cursor-default overflow-hidden bg-white dark:bg-gray-800 px-6 pt-10 pb-8 shadow-xl ring-1 ring-gray-900/5  mx-auto w-[310px] md:w-[500px] rounded-lg ">
+          <button
+            onClick={() => navigate(-1)}
+            className="py-2 px-4 mb-5 bg-gray-900 text-gray-100 hover:bg-gray-800 dark:bg-gray-100 dark:text-gray-800 dark:hover:bg-white rounded-md transition duration-200"
+          >
+            <IoMdArrowBack />
+          </button>
           <div className="relative z-10">
             <span className="grid h-20 w-20 place-items-center rounded-full bg-sky-500">
               <svg
@@ -85,9 +93,6 @@ const VendingMachineDetails = () => {
               </h2>
               <div className="flex justify-between py-1">
                 <strong>Location:</strong> {machine?.location}
-              </div>
-              <div className="flex justify-between py-1">
-                <strong>Type:</strong> {machine?.machineType}
               </div>
 
               <div className="flex justify-between py-1">

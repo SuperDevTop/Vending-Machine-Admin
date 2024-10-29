@@ -16,8 +16,6 @@ const EditMachineModal = ({ isOpen, onSave, onClose, machine, id }) => {
     (state) => state.vendingMachine
   );
 
-  // Local state
-  const [machineType, setMachineType] = useState(machine?.machineType || "");
   const [status, setStatus] = useState(machine?.status ? "Active" : "Inactive");
 
   // Form handling
@@ -43,21 +41,12 @@ const EditMachineModal = ({ isOpen, onSave, onClose, machine, id }) => {
       setValue("machineName", machine.machineName);
       setValue("description", machine.description);
       setValue("location", machine.location);
-      setValue("machineType", machine.machineType);
-      setMachineType(machine.machineType);
       setStatus(machine.status ? "Active" : "Inactive");
     }
   }, [machine, setValue]);
 
   // Early return if modal is not open
   if (!isOpen) return null;
-
-  // Event handlers
-  const handleMachineTypeChange = (event) => {
-    const value = event.target.value;
-    setMachineType(value);
-    setValue("machineType", value);
-  };
 
   const handleStatusChange = (event) => {
     const value = event.target.value;
@@ -69,7 +58,6 @@ const EditMachineModal = ({ isOpen, onSave, onClose, machine, id }) => {
     reset();
     onClose();
     setStatus("");
-    setMachineType("");
   };
 
   // Form submission handler
@@ -79,7 +67,6 @@ const EditMachineModal = ({ isOpen, onSave, onClose, machine, id }) => {
       const payload = {
         ...data,
         status: status === "Active",
-        machineType: machineType,
       };
 
       dispatch(
@@ -140,19 +127,6 @@ const EditMachineModal = ({ isOpen, onSave, onClose, machine, id }) => {
           <FormField label="Machine Name" name="machineName" />
           <FormField label="Description" name="description" />
           <FormField label="Location" name="location" />
-          
-          {/* Machine Type Select */}
-          <FormField label="Machine Type">
-            <select
-              value={machineType}
-              onChange={handleMachineTypeChange}
-              className="w-full p-2 border border-gray-300 dark:border-gray-600 outline-none rounded-md bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-100"
-            >
-              <option value="">Select a machine type</option>
-              <option value="Snack">Snack</option>
-              <option value="Beverage">Beverage</option>
-            </select>
-          </FormField>
 
           {/* Status Select */}
           <FormField label="Status">

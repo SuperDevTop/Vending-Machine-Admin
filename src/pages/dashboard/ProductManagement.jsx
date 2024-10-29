@@ -21,10 +21,10 @@ const ProductManagement = () => {
   const handleOnSave = () => {
     dispatch(
       getProducts({
-        onSuccess: () => {
-          setFilteredProducts(products);
+        onSuccess: (data) => {
+          setFilteredProducts(data);
         },
-        onError: () => {},
+        onError: (data) => {},
       })
     );
   };
@@ -32,10 +32,10 @@ const ProductManagement = () => {
   useEffect(() => {
     dispatch(
       getProducts({
-        onSuccess: () => {
-          setFilteredProducts(products);
+        onSuccess: (data) => {
+          setFilteredProducts(data);
         },
-        onError: () => {},
+        onError: (data) => {},
       })
     );
   }, []);
@@ -79,7 +79,7 @@ const ProductManagement = () => {
             <ImSpinner8 className="spinning-icon animate-spin text-4xl" />
           </div>
         ) : (
-          <ProductTable products={filteredProduct} />
+          <ProductTable products={filteredProduct} setFilteredProducts={setFilteredProducts}/>
         )}
       </div>
       <AddProductModal

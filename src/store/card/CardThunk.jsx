@@ -10,6 +10,7 @@ export const getUsers = createAsyncThunk(
       const snapshot = await get(userssRef);
 
       if (!snapshot.exists()) {
+        onSuccess({});
         return {};
       }
 

@@ -19,7 +19,6 @@ const EditProductModal = ({ isOpen, onSave, onClose, product, id }) => {
   // Local state
   const [machineID, setMachineID] = useState(product?.machineID || "");
   const [selectedMachine, setSelectedMachine] = useState(null);
-  const [category, setCategory] = useState(product?.category || "");
 
   // Form handling
   const {
@@ -34,6 +33,7 @@ const EditProductModal = ({ isOpen, onSave, onClose, product, id }) => {
       productName: "",
       price: "",
       inventory: null,
+      slotNumber: null,
     },
   });
 
@@ -43,8 +43,8 @@ const EditProductModal = ({ isOpen, onSave, onClose, product, id }) => {
       setValue("productName", product.productName);
       setValue("price", product.price);
       setValue("inventory", product.inventory);
+      setValue("slotNumber", product.slotNumber);
       setMachineID(product.machineID);
-      setCategory(product.category);
     }
   }, [product, setValue]);
 
@@ -59,14 +59,9 @@ const EditProductModal = ({ isOpen, onSave, onClose, product, id }) => {
     setSelectedMachine(machine);
   };
 
-  const handleCategoryChange = (event) => {
-    setCategory(event.target.value);
-  };
-
   const handleClose = () => {
     reset();
     onClose();
-    setCategory("");
     setMachineID("");
     setSelectedMachine(null);
   };
@@ -79,18 +74,9 @@ const EditProductModal = ({ isOpen, onSave, onClose, product, id }) => {
       return;
     }
 
-    // Validate product category matches machine type
-    if (selectedMachine && selectedMachine.machineType !== category) {
-      toast.error(
-        `Product category (${category}) does not match machine type (${selectedMachine.machineType}).`
-      );
-      return;
-    }
-
     const payload = {
       ...data,
       machineID,
-      category,
     };
 
     dispatch(
@@ -129,8 +115,21 @@ const EditProductModal = ({ isOpen, onSave, onClose, product, id }) => {
     </div>
   );
 
+  const FormField2 = ({ label, children, error }) => (
+    <div className="mb-4">
+      <label className="block text-left text-gray-700 dark:text-gray-300 font-bold mb-2">
+        {label}
+      </label>
+      {children}
+      {error && <p className="text-red-500 text-sm">{error}</p>}
+    </div>
+  );
+
   return (
-    <div className="fixed top-0 left-0 right-0 bg-gray-800 bg-opacity-90 flex items-center justify-center md:inset-0 h-[calc(100%-1rem)] max-h-full" style={{ zIndex: 1000 }}>
+    <div
+      className="fixed top-0 left-0 right-0 bg-gray-800 bg-opacity-90 flex items-center justify-center md:inset-0 h-[calc(100%-1rem)] max-h-full"
+      style={{ zIndex: 1000 }}
+    >
       <div className="flex flex-col w-full max-w-3xl max-h-full bg-white dark:bg-gray-800 border dark:border-gray-600 text-center text-xs rounded-lg text-black dark:text-white font-quicksand box-border overflow-auto">
         {/* Header */}
         <div className="bg-white dark:bg-gray-800 px-8 py-2 mb-8">
@@ -143,22 +142,22 @@ const EditProductModal = ({ isOpen, onSave, onClose, product, id }) => {
         </div>
 
         {/* Form */}
-        <form className="grid grid-cols-1 md:grid-cols-2 gap-4 p-5" onSubmit={handleSubmit(onSubmit)}>
+        <form
+          className="grid grid-cols-1 md:grid-cols-2 gap-4 p-5"
+          onSubmit={handleSubmit(onSubmit)}
+        >
           <FormField label="Product Name" name="productName" />
           <FormField label="Price" name="price" />
           <FormField label="Inventory" name="inventory" />
-          
-          {/* Category Select */}
-          <FormField label="Category">
-            <select
-              value={category}
-              onChange={handleCategoryChange}
-              className="w-full p-2 border border-gray-300 dark:border-gray-600 outline-none rounded-md bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-100"
-            >
-              <option value="Snack">Snack</option>
-              <option value="Beverage">Beverage</option>
-            </select>
-          </FormField>
+          <FormField2 label="Slot Number" error={errors.slotNumber?.message}>
+            <input
+              type="number"
+              {...register("slotNumber", { valueAsNumber: true })}
+              min="1"
+              placeholder={`Enter your slot number`}
+              className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-100"
+            />
+          </FormField2>
 
           {/* Machine Select */}
           <FormField label="Machine">

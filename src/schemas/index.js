@@ -50,7 +50,6 @@ export const AddMachineSchema = z.object({
   location: z.string({
     message: "Location is required",
   }),
-  machineType: z.string().optional(),
 });
 
 export const EditMachineSchema = z.object({
@@ -63,7 +62,6 @@ export const EditMachineSchema = z.object({
   location: z.string({
     message: "Location is required",
   }),
-  machineType: z.string().optional(),
   status: z.boolean().optional(),
 });
 
@@ -85,8 +83,11 @@ export const AddProductSchema = z.object({
     .regex(/^\d+$/, {
       message: "Inventory must contain only digits",
     }),
+  slotNumber: z
+    .number({ invalid_type_error: "Slot number must be a integer value" })
+    .positive("Slot number must be greater than 0")
+    .int("Slot number must be an integer"),
 });
-
 
 export const assignProductSchema = z.object({
   selectedProductId: z.string().nonempty("Please select a product"),

@@ -30,7 +30,7 @@ const VendingMachines = () => {
     dispatch(
       getVendingMachines({
         onSuccess: (data) => {
-          setFilteredMachines(vendingMachines);
+          setFilteredMachines(data);
         },
         onError: (data) => {},
       })
@@ -71,7 +71,7 @@ const VendingMachines = () => {
     dispatch(
       getVendingMachines({
         onSuccess: (data) => {
-          setFilteredMachines(vendingMachines);
+          setFilteredMachines(data);
         },
         onError: (data) => {},
       })
@@ -83,7 +83,7 @@ const VendingMachines = () => {
       <div className="sm:flex sm:justify-between sm:items-center mb-8">
         <div className="mb-4 sm:mb-0">
           <h1 className="text-2xl md:text-3xl text-gray-800 dark:text-gray-100 font-bold">
-            Vending Machines
+          Machines
           </h1>
         </div>
         <div className=" flex flex-wrap md:flex-nowrap justify-center items-center gap-2 lg:gap-5">
@@ -135,7 +135,10 @@ const VendingMachines = () => {
             <ImSpinner8 className="spinning-icon animate-spin text-4xl" />
           </div>
         ) : (
-          <MachineTable vendingMachines={filteredMachines} />
+          <MachineTable
+            vendingMachines={filteredMachines}
+            setFilteredMachines={setFilteredMachines}
+          />
         )}
       </div>
       <AddMachineModal
