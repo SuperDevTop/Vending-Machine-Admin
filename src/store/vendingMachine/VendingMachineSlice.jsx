@@ -4,15 +4,20 @@ import {
   getVendingMachines,
   updateVendingMachine,
   deleteVendingMachine,
+  getInventoryInMachine,
 } from "./VendingMachineThunk";
 
 const initialState = {
   test: null,
   vendingMachines: null,
+  inventory: null,
   addVendingMachineLoader: false,
   getVendingMachineLoader: false,
   updateVendingMachineLoader: false,
   deleteVendingMachineLoader: false,
+  addInventoryLoader: false,
+  getInventoryLoader: false,
+  updateInventoryLoader: false,
 };
 
 export const vendingMachineSlice = createSlice({
@@ -63,6 +68,17 @@ export const vendingMachineSlice = createSlice({
       })
       .addCase(deleteVendingMachine.rejected, (state, action) => {
         state.deleteVendingMachineLoader = false;
+      })
+
+      .addCase(getInventoryInMachine.pending, (state, action) => {
+        state.getInventoryLoader = true;
+      })
+      .addCase(getInventoryInMachine.fulfilled, (state, action) => {
+        state.getInventoryLoader = false;
+        state.inventory = action?.payload;
+      })
+      .addCase(getInventoryInMachine.rejected, (state, action) => {
+        state.getInventoryLoader = false;
       });
   },
 });

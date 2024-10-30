@@ -97,7 +97,7 @@ const VendingMachines = () => {
               {operators &&
                 Object.entries(operators).map(([id, operator]) => (
                   <option key={id} value={id}>
-                    {operator?.fname} {operator?.lname}
+                    {operator?.name}
                   </option>
                 ))}
             </select>

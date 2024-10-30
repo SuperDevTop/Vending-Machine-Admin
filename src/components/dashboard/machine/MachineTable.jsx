@@ -14,15 +14,15 @@ const MachineTable = ({ vendingMachines, setFilteredMachines }) => {
   const navigate = useNavigate();
 
   // Function to handle edit
-  const handleEdit = (id, operator) => {
-    setSelectedMachine(operator);
+  const handleEdit = (id, machine) => {
+    setSelectedMachine(machine);
     setSelectedId(id);
     setIsEditModalOpen(true);
   };
 
-  const handleDelete = (id, operator) => {
+  const handleDelete = (id, machine) => {
     setSelectedId(id);
-    setSelectedMachine(operator);
+    setSelectedMachine(machine);
     setIsDeleteModalOpen(true);
   };
 

@@ -5,6 +5,7 @@ import VendingMachines from "./pages/dashboard/VendingMachines";
 import VendingMachineDetails from "./pages/dashboard/VendingMachineDetails";
 import ProductDetails from "./pages/dashboard/ProductDetails";
 import ProductManagement from "./pages/dashboard/ProductManagement";
+import Inventory from "./pages/dashboard/Inventory";
 import UserManagement from "./pages/credit_management/UserManagement";
 import CardAssociation from "./pages/credit_management/CardAssociation";
 import OperatorReports from "./pages/reports/OperatorReports";
@@ -56,6 +57,7 @@ function App() {
             <Route path="operator-list" element={<OperatorList />} />
             <Route path="vending-machines" element={<VendingMachines />} />
             <Route path="product-management" element={<ProductManagement />} />
+            <Route path="inventory" element={<Inventory />} />
             {/* Add more routes as needed */}
           </Route>
           {/* /admin/card-parameters */}

@@ -86,11 +86,6 @@ const ProductTable = ({ products, setFilteredProducts }) => {
                   </th>
                   <th className="p-2">
                     <div className="font-semibold text-left truncate">
-                      Inventory
-                    </div>
-                  </th>
-                  <th className="p-2">
-                    <div className="font-semibold text-left truncate">
                       Price
                     </div>
                   </th>
@@ -120,11 +115,6 @@ const ProductTable = ({ products, setFilteredProducts }) => {
                         </td>
                         <td className="p-2">
                           <div className="text-gray-800 dark:text-gray-100 truncate">
-                            {product?.inventory}
-                          </div>
-                        </td>
-                        <td className="p-2">
-                          <div className="text-gray-800 dark:text-gray-100 truncate">
                             {product?.price}
                           </div>
                         </td>
@@ -135,12 +125,12 @@ const ProductTable = ({ products, setFilteredProducts }) => {
                         </td>
                         <td className="p-2">
                           <div className="flex items-center justify-center gap-2">
-                            <button
+                            {/* <button
                               onClick={() => handleDetails(id)}
                               className="py-2 px-4 w-20 bg-gray-900 text-gray-100 hover:bg-gray-800 dark:bg-gray-100 dark:text-gray-800 dark:hover:bg-white rounded-md transition duration-200"
                             >
                               <h3>Details</h3>
-                            </button>
+                            </button> */}
                             <button
                               onClick={() => handleEdit(id, product)}
                               className="py-2 px-4 w-20 bg-gray-900 text-gray-100 hover:bg-gray-800 dark:bg-gray-100 dark:text-gray-800 dark:hover:bg-white rounded-md transition duration-200"

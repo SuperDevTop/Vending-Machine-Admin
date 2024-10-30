@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { AddMachineSchema } from "../../../schemas/index";
@@ -9,12 +9,17 @@ import { ImSpinner8 } from "react-icons/im";
 
 // Redux actions
 import { addVendingMachine } from "../../../store/vendingMachine/VendingMachineThunk";
-import { updateOperator } from "../../../store/operator/operatorThunk";
+import {
+  getOperators,
+  updateOperator,
+} from "../../../store/operator/operatorThunk";
 
 const AddMachineModal = ({ isOpen, onSave, onClose }) => {
   // Redux hooks
   const dispatch = useDispatch();
-  const { addVendingMachineLoader } = useSelector((state) => state.vendingMachine);
+  const { addVendingMachineLoader } = useSelector(
+    (state) => state.vendingMachine
+  );
   const { operators } = useSelector((state) => state.operator);
 
   // Local state
@@ -37,9 +42,16 @@ const AddMachineModal = ({ isOpen, onSave, onClose }) => {
     },
   });
 
+  useEffect(() => {
+    dispatch(
+      getOperators({
+        onSuccess: (data) => {},
+        onError: (data) => {},
+      })
+    );
+  }, []);
   // Early return if modal is not open
   if (!isOpen) return null;
-
 
   const handleOperatorIDChange = (event) => {
     const value = event.target.value;
@@ -131,7 +143,10 @@ const AddMachineModal = ({ isOpen, onSave, onClose }) => {
   );
 
   return (
-    <div className="fixed top-0 left-0 right-0 bg-gray-800 bg-opacity-90 flex items-center justify-center md:inset-0 h-[calc(100%-1rem)] max-h-full" style={{ zIndex: 1000 }}>
+    <div
+      className="fixed top-0 left-0 right-0 bg-gray-800 bg-opacity-90 flex items-center justify-center md:inset-0 h-[calc(100%-1rem)] max-h-full"
+      style={{ zIndex: 1000 }}
+    >
       <div className="flex flex-col w-full max-w-3xl max-h-full bg-white dark:bg-gray-800 border dark:border-gray-600 text-center text-xs rounded-lg text-black dark:text-white font-quicksand box-border border-b-[1px] border-solid border-gainsboro overflow-auto">
         {/* Header */}
         <div className="bg-white dark:bg-gray-800 px-8 py-2 mb-8">
@@ -144,11 +159,14 @@ const AddMachineModal = ({ isOpen, onSave, onClose }) => {
         </div>
 
         {/* Form */}
-        <form className="grid grid-cols-1 md:grid-cols-2 gap-4 p-5" onSubmit={handleSubmit(onSubmit)}>
+        <form
+          className="grid grid-cols-1 md:grid-cols-2 gap-4 p-5"
+          onSubmit={handleSubmit(onSubmit)}
+        >
           <FormField label="Machine Name" name="machineName" />
           <FormField label="Description" name="description" />
           <FormField label="Location" name="location" />
-          
+
           {/* Operator Select */}
           <FormField label="Operator">
             <select
@@ -157,16 +175,17 @@ const AddMachineModal = ({ isOpen, onSave, onClose }) => {
               className="w-full p-2 border border-gray-300 dark:border-gray-600 outline-none rounded-md bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-100"
             >
               <option value="">Select an operator</option>
-              {operators &&
+              {operators && Object.entries(operators).length > 0 ? (
                 Object.entries(operators).map(([id, operator]) => (
                   <option key={id} value={id}>
-                    {operator?.fname} {operator?.lname}
+                    {operator?.name}
                   </option>
-                ))}
+                ))
+              ) : (
+                <option>No operators available</option>
+              )}
             </select>
           </FormField>
-
-
 
           {/* Action Buttons */}
           <div className="col-span-1 md:col-span-2 flex justify-center my-0 md:my-6 gap-2">

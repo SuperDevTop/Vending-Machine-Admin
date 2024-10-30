@@ -87,34 +87,9 @@ const ProductsDetails = () => {
               <div className="flex justify-between py-1">
                 <strong>Price:</strong> <span>{product?.price}</span>
               </div>
-              <div className="flex justify-between py-1">
-                <strong>Inventory:</strong> <span>{product?.inventory}</span>
-              </div>
             </div>
 
-            {machine && (
-              <div className="mt-6 bg-gray-100 dark:bg-gray-700 p-4 rounded-lg">
-                <h3 className="text-lg font-semibold text-gray-700 dark:text-gray-200">
-                  Machine Information
-                </h3>
-                <div className="flex justify-between py-1">
-                  <strong>Name:</strong> <span>{machine?.machineName}</span>
-                </div>
-                <div className="flex justify-between py-1">
-                  <strong>Machine Type:</strong>{" "}
-                  <span>{machine?.machineType}</span>
-                </div>
-                <div className="flex justify-between py-1">
-                  <strong>Location:</strong> <span>{machine?.location}</span>
-                </div>
-                <div className="flex justify-between py-1">
-                  <strong>Status:</strong>
-                  <span>
-                    {machine?.status === true ? "Active" : "Inactive"}
-                  </span>
-                </div>
-              </div>
-            )}
+
           </div>
         </div>
       </div>

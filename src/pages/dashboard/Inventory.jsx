@@ -1,30 +1,32 @@
 import React, { useState, useEffect } from "react";
 import AddOperatorModal from "../../components/dashboard/operators/AddOperatorModal";
-import { HiOutlinePlusSm } from "react-icons/hi";
-import OperatorTable from "../../components/dashboard/operators/OperatorTable";
+import InventoryTable from "../../components/dashboard/inventory/InventoryTable";
 import { useDispatch, useSelector } from "react-redux";
-import { getOperators } from "../../store/operator/operatorThunk";
+import {
+  getInventoryInMachine,
+  getVendingMachines,
+} from "../../store/vendingMachine/VendingMachineThunk";
 import { ImSpinner8 } from "react-icons/im";
-
-const OperatorList = () => {
-  const [addOperatorModal, setAddOperatorModal] = useState(false);
-  const [filteredOperator, setFilteredOperators] = useState(null);
-  const { operators, getOperatorsLoader } = useSelector(
-    (state) => state.operator
+import { getProducts } from "../../store/product/productThunk";
+const Inventory = () => {
+  const [addInventoryModal, setAddInventoryModal] = useState(false);
+  const [filteredInventory, setFilteredInventory] = useState(null);
+  const { inventory, getInventoryLoader } = useSelector(
+    (state) => state.vendingMachine
   );
   const dispatch = useDispatch();
 
   const addClicked = () => {
-    setAddOperatorModal(true);
+    setAddInventoryModal(true);
   };
   const handleOnClose = () => {
-    setAddOperatorModal(false);
+    setAddInventoryModal(false);
   };
   const handleOnSave = () => {
     dispatch(
-      getOperators({
+      getInventoryInMachine({
         onSuccess: (data) => {
-          setFilteredOperators(data);
+          setFilteredInventory(data);
         },
         onError: (data) => {},
       })
@@ -32,29 +34,44 @@ const OperatorList = () => {
   };
 
   const handleSearch = (value) => {
-    const filtered = Object.entries(operators).filter(([id, operator]) =>
-      operator.name.toLowerCase().includes(value.toLowerCase())
+    const filtered = inventory.filter(
+      (item) =>
+        item.machineName.toLowerCase().includes(value.toLowerCase()) ||
+        item.productName.toLowerCase().includes(value.toLowerCase())
     );
-    setFilteredOperators(Object.fromEntries(filtered));
+    setFilteredInventory(filtered);
   };
 
   useEffect(() => {
     dispatch(
-      getOperators({
+      getVendingMachines({
         onSuccess: (data) => {
-          setFilteredOperators(data);
+        },
+        onError: (data) => {},
+      })
+    );
+    dispatch(
+      getProducts({
+        onSuccess: (data) => {
+        },
+        onError: (data) => {},
+      })
+    );
+    dispatch(
+      getInventoryInMachine({
+        onSuccess: (data) => {
+          setFilteredInventory(data);
         },
         onError: (data) => {},
       })
     );
   }, []);
-
   return (
     <div>
       <div className="sm:flex sm:justify-between sm:items-center mb-8">
         <div className="mb-4 sm:mb-0">
           <h1 className="text-2xl md:text-3xl text-gray-800 dark:text-gray-100 font-bold">
-            Operators
+            Inventory
           </h1>
         </div>
         <div className=" flex justify-center items-center gap-2 lg:gap-5">
@@ -64,36 +81,22 @@ const OperatorList = () => {
             placeholder="Search..."
             onChange={(e) => handleSearch(e.target.value)}
           />
-          <button
-            onClick={addClicked}
-            className="py-2 px-4 bg-gray-900 text-gray-100 hover:bg-gray-800 dark:bg-gray-100 dark:text-gray-800 dark:hover:bg-white rounded-md transition duration-200"
-          >
-            <div className="flex items-center gap-1">
-              <HiOutlinePlusSm className="text-2xl" />
-              <h3>Add</h3>
-            </div>
-          </button>
         </div>
       </div>
       <div className="grid grid-cols-12 gap-6">
-        {getOperatorsLoader ? (
+        {getInventoryLoader ? (
           <div className="col-span-12 flex justify-center items-center h-96">
             <ImSpinner8 className="spinning-icon animate-spin text-4xl" />
           </div>
         ) : (
-          <OperatorTable
-            operators={filteredOperator}
-            setFilteredOperators={setFilteredOperators}
+          <InventoryTable
+            inventory={filteredInventory}
+            setFilteredInventory={setFilteredInventory}
           />
         )}
       </div>
-      <AddOperatorModal
-        isOpen={addOperatorModal}
-        onSave={handleOnSave}
-        onClose={handleOnClose}
-      />
     </div>
   );
 };
 
-export default OperatorList;
+export default Inventory;
