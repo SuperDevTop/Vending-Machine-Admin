@@ -107,14 +107,7 @@ const VendingMachineDetails = () => {
                   Operator Information
                 </h3>
                 <div className="flex justify-between py-1">
-                  <strong>Name:</strong> {operator.fname} {operator.lname}
-                </div>
-
-                <div className="flex flex-wrap truncate justify-between py-1">
-                  <strong>Email:</strong> {operator.email}
-                </div>
-                <div className="flex justify-between py-1">
-                  <strong>Phone:</strong> {operator.phoneNumber}
+                  <strong>Name:</strong> {operator.name}
                 </div>
               </div>
             )}

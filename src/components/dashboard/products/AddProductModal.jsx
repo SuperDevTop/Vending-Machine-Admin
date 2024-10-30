@@ -66,7 +66,6 @@ const AddProductModal = ({ isOpen, onSave, onClose }) => {
 
     const payload = {
       ...data,
-      machineID,
     };
 
     dispatch(
@@ -138,7 +137,6 @@ const AddProductModal = ({ isOpen, onSave, onClose }) => {
         >
           <FormField label="Product Name" name="productName" />
           <FormField label="Price" name="price" />
-          <FormField label="Inventory" name="inventory" />
           <FormField2 label="Slot Number" error={errors.slotNumber?.message}>
             <input
               type="number"
@@ -149,22 +147,6 @@ const AddProductModal = ({ isOpen, onSave, onClose }) => {
             />
           </FormField2>
 
-          {/* Machine Select */}
-          <FormField label="Machine">
-            <select
-              value={machineID}
-              onChange={handleMachineIDChange}
-              className="w-full p-2 border border-gray-300 dark:border-gray-600 outline-none rounded-md bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-100"
-            >
-              <option value="">Select a machine</option>
-              {vendingMachines &&
-                Object.entries(vendingMachines).map(([id, machine]) => (
-                  <option key={id} value={id}>
-                    {machine?.machineName}
-                  </option>
-                ))}
-            </select>
-          </FormField>
 
           {/* Action Buttons */}
           <div className="col-span-1 md:col-span-2 flex justify-center my-0 md:my-6 gap-2">

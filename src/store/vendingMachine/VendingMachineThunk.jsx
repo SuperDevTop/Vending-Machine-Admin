@@ -67,3 +67,78 @@ export const deleteVendingMachine = createAsyncThunk(
     }
   }
 );
+
+export const addUpdateInventoryInMachine = createAsyncThunk(
+  "vendingMachine/addUpdateInventoryInMachine",
+  async ({ id, payload, onSuccess, onError }, thunkAPI) => {
+    try {
+      await update(ref(db, `vendingMachine/${id}`), payload);
+      onSuccess();
+    } catch (error) {
+      onError(error.data.details || "something went wrong");
+
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+
+export const getInventoryInMachine = createAsyncThunk(
+  "vendingMachine/getInventoryInMachine",
+  async ({ onSuccess, onError }, thunkAPI) => {
+    try {
+      // Fetch vending machine data
+      const vendingMachineSnapshot = await get(ref(db, `vendingMachine`));
+      const vendingMachines = vendingMachineSnapshot.val();
+
+      // Fetch products data
+      const productsSnapshot = await get(ref(db, `products`));
+      const products = productsSnapshot.val();
+
+      const inventoryData = [];
+
+      for (const [machineId, machineData] of Object.entries(vendingMachines)) {
+        const { machineName, location, productInventory } = machineData;
+        const machineInventory = {
+          machineId,
+          machineName,
+          location,
+          products: [],
+        };
+
+        // Check if productInventory exists and is not empty
+        if (productInventory && Object.keys(productInventory).length > 0) {
+          // Iterate over each product in the inventory
+          for (const [productId, inventoryCount] of Object.entries(
+            productInventory
+          )) {
+            const productData = products[productId];
+
+            // Check if the product data exists
+            if (productData) {
+              machineInventory.products.push({
+                productId,
+                productName: productData.productName,
+                productPrice: productData.price,
+                inventoryCount,
+              });
+            }
+          }
+        } else {
+          // If productInventory is empty or undefined, add a message
+          machineInventory.message = "No products available in this machine.";
+        }
+
+        // Add machine inventory to the main inventory data
+        inventoryData.push(machineInventory);
+      }
+
+      // Invoke onSuccess callback with the processed data
+      onSuccess(inventoryData);
+      return inventoryData;
+    } catch (error) {
+      // Invoke onError callback with error details
+      onError(error.message || "Something went wrong");
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);

@@ -32,8 +32,7 @@ const AddOperatorModal = ({ isOpen, onSave, onClose }) => {
   } = useForm({
     resolver: zodResolver(AddOperatorSchema),
     defaultValues: {
-      fname: "",
-      lname: "",
+      name: "",
       email: "",
       phoneNumber: "",
     },
@@ -153,8 +152,7 @@ const AddOperatorModal = ({ isOpen, onSave, onClose }) => {
           className="grid grid-cols-1 md:grid-cols-2 gap-4 p-5"
           onSubmit={handleSubmit(onSubmit)}
         >
-          <FormField label="First Name" name="fname" />
-          <FormField label="Last Name" name="lname" />
+          <FormField label="Name" name="name" />
           <FormField label="Email" name="email" type="email" />
 
           {/* Phone Input */}

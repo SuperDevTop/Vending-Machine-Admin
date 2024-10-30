@@ -73,12 +73,7 @@ const OperatorTable = ({ operators, setFilteredOperators }) => {
                 <tr>
                   <th className="p-2">
                     <div className="font-semibold text-left truncate">
-                      First Name
-                    </div>
-                  </th>
-                  <th className="p-2">
-                    <div className="font-semibold text-left truncate">
-                      Last Name
+                      Name
                     </div>
                   </th>
                   <th className="p-2">
@@ -113,12 +108,7 @@ const OperatorTable = ({ operators, setFilteredOperators }) => {
                       <tr key={id}>
                         <td className="p-2">
                           <div className="text-gray-800 dark:text-gray-100">
-                            {operator?.fname}
-                          </div>
-                        </td>
-                        <td className="p-2">
-                          <div className="text-gray-800 dark:text-gray-100 truncate">
-                            {operator?.lname}
+                            {operator?.name}
                           </div>
                         </td>
                         <td className="p-2">

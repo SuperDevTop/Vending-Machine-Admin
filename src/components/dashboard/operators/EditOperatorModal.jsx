@@ -42,8 +42,7 @@ const EditOperatorModal = ({ isOpen, onSave, onClose, operator, id }) => {
   // Initialize form with operator data
   useEffect(() => {
     if (operator) {
-      setValue("fname", operator.fname);
-      setValue("lname", operator.lname);
+      setValue("name", operator.name);
       setValue("email", operator.email);
       setValue("phoneNumber", operator.phoneNumber);
       setPhone(operator.phoneNumber);
@@ -169,8 +168,7 @@ const EditOperatorModal = ({ isOpen, onSave, onClose, operator, id }) => {
 
         {/* Form */}
         <form className="grid grid-cols-1 md:grid-cols-2 gap-4 p-5" onSubmit={handleSubmit(onSubmit)}>
-          <FormField label="First Name" name="fname" />
-          <FormField label="Last Name" name="lname" />
+          <FormField label="Name" name="name" />
           <FormField label="Email" name="email" type="email" disabled={true} />
           
           {/* Phone Input */}

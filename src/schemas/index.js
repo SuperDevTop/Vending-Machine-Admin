@@ -10,11 +10,8 @@ export const LoginSchema = z.object({
 });
 
 export const AddOperatorSchema = z.object({
-  fname: z.string({
-    message: "First Name is required",
-  }),
-  lname: z.string({
-    message: "Last Name is required",
+  name: z.string({
+    message: "Name is required",
   }),
   email: z.string().email({
     message: "Email is required",
@@ -25,11 +22,8 @@ export const AddOperatorSchema = z.object({
 });
 
 export const EditOperatorSchema = z.object({
-  fname: z.string({
-    message: "First Name is required",
-  }),
-  lname: z.string({
-    message: "Last Name is required",
+  name: z.string({
+    message: "Name is required",
   }),
   email: z.string().email({
     message: "Email is required",
@@ -75,13 +69,6 @@ export const AddProductSchema = z.object({
     })
     .regex(/^\d+(\.\d+)?$/, {
       message: "Price must be a valid floating-point number",
-    }),
-  inventory: z
-    .string({
-      message: "Inventory is required",
-    })
-    .regex(/^\d+$/, {
-      message: "Inventory must contain only digits",
     }),
   slotNumber: z
     .number({ invalid_type_error: "Slot number must be a integer value" })
