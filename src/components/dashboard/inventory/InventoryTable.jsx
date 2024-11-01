@@ -127,13 +127,13 @@ const InventoryTable = ({ inventory, setFilteredInventory }) => {
                       <td className="p-2 text-gray-800 dark:text-gray-100">
                         {machine.location}
                       </td>
-                      <td className="p-2 text-gray-800 dark:text-gray-100 flex gap-4 w-56 md:w-auto  overflow-x-scroll md:overflow-x-auto">
+                      <td className="p-2 text-gray-800 dark:text-gray-100 flex gap-4 w-56 md:w-auto overflow-x-scroll md:overflow-x-auto">
                         {machine.products.length > 0 ? (
                           machine.products.map((product, productIndex) => (
                             <div key={productIndex} className="flex flex-col">
                               <span>{product.productName}</span>
                               <span>
-                                Quanity: {product.inventoryCount || "-"}
+                                Quantity: {product.inventoryCount || "-"}
                               </span>
                             </div>
                           ))
@@ -145,8 +145,8 @@ const InventoryTable = ({ inventory, setFilteredInventory }) => {
                         <div className="flex items-center justify-center gap-2">
                           {machine.products.length > 0 ? (
                             <button
+                              onClick={() => handleEdit(machine.machineId)}
                               className="py-2 px-4 w-20 bg-gray-900 text-gray-100 hover:bg-gray-800 dark:bg-gray-100 dark:text-gray-800 dark:hover:bg-white rounded-md transition duration-200"
-                              //   onClick={() => handleEdit(machine.machineId)}
                             >
                               <h3>Edit</h3>
                             </button>
@@ -181,6 +181,8 @@ const InventoryTable = ({ inventory, setFilteredInventory }) => {
           isOpen={isEditModalOpen}
           onSave={handleOnSaveModal}
           onClose={handleEditCloseModal}
+          machineId={selectedMachineId}
+          selectedMachine={selectedMachine}
         />
       )}
     </>
