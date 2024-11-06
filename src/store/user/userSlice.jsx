@@ -1,9 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { loginUser, signOutUser } from "./userThunk";
+import { loginUser, signOutUser, addUser, getUsers } from "./userThunk";
 
 const initialState = {
   user: null,
   loginLoader: false,
+  users: null,
+  addUserLoader: false,
+  getUsersLoader: false,
 };
 
 export const userSlice = createSlice({
@@ -31,7 +34,26 @@ export const userSlice = createSlice({
       .addCase(signOutUser.fulfilled, (state, action) => {
         state.user = null;
       })
-      .addCase(signOutUser.rejected, (state, action) => {});
+      .addCase(signOutUser.rejected, (state, action) => {})
+      .addCase(addUser.pending, (state, action) => {
+        state.addUserLoader = true;
+      })
+      .addCase(addUser.fulfilled, (state, action) => {
+        state.addUserLoader = false;
+      })
+      .addCase(addUser.rejected, (state, action) => {
+        state.addUserLoader = false;
+      })
+      .addCase(getUsers.pending, (state, action) => {
+        state.getUsersLoader = true;
+      })
+      .addCase(getUsers.fulfilled, (state, action) => {
+        state.getUsersLoader = false;
+        state.users = action?.payload;
+      })
+      .addCase(getUsers.rejected, (state, action) => {
+        state.getUsersLoader = false;
+      });
   },
 });
 
