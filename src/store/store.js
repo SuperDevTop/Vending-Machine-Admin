@@ -1,6 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { combineReducers } from "redux";
 import userSlice from "./user/userSlice";
+import adminSlice from "./admin/adminSlice";
 import { persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import operatorSlice from "./operator/operatorSlice";
@@ -9,6 +10,7 @@ import productSlice from "./product/productSlice";
 import cardSlice from "./card/CardSlice";
 
 const reducers = combineReducers({
+  admin: adminSlice,
   user: userSlice,
   operator: operatorSlice,
   vendingMachine: vendingMachineSlice,

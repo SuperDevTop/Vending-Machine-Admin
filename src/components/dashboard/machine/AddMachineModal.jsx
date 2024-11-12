@@ -36,6 +36,7 @@ const AddMachineModal = ({ isOpen, onSave, onClose }) => {
   } = useForm({
     resolver: zodResolver(AddMachineSchema),
     defaultValues: {
+      serialNo: "",
       machineName: "",
       description: "",
       location: "",
@@ -163,6 +164,7 @@ const AddMachineModal = ({ isOpen, onSave, onClose }) => {
           className="grid grid-cols-1 md:grid-cols-2 gap-4 p-5"
           onSubmit={handleSubmit(onSubmit)}
         >
+          <FormField label="Serial Number" name="serialNo" />
           <FormField label="Machine Name" name="machineName" />
           <FormField label="Description" name="description" />
           <FormField label="Location" name="location" />

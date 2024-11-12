@@ -35,6 +35,9 @@ export const EditOperatorSchema = z.object({
 });
 
 export const AddMachineSchema = z.object({
+  serialNo: z.string({
+    message: "Serial Number is required",
+  }),
   machineName: z.string({
     message: "Machine name is required",
   }),
@@ -47,6 +50,9 @@ export const AddMachineSchema = z.object({
 });
 
 export const EditMachineSchema = z.object({
+  serialNo: z.string({
+    message: "Serial Number is required",
+  }),
   machineName: z.string({
     message: "Machine name is required",
   }),

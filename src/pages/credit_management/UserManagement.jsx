@@ -4,35 +4,11 @@ import UserTable from "../../components/card/UserTable";
 import { getUsers, addUser } from "../../store/user/userThunk";
 import { ImSpinner8 } from "react-icons/im";
 import * as XLSX from "xlsx";
+import { HiOutlinePlusSm } from "react-icons/hi";
 import { nanoid } from "nanoid";
 
 const UserManagement = () => {
-  // add new user
-
-  // import { nanoid } from "nanoid";
-  // import { ref, set, get, update, remove, child } from "firebase/database";
-  // import { db } from "../../config/firebase";
-
-  // const handleSubmit = async () => {
-  //   const uniqueId = nanoid();
-  //   const payload = {
-  //     name: "Sohaib",
-  //     email: "sohaib@gmail.com",
-  //     cardDetails: {
-  //       cardNumber: "4242424242424242",
-  //       expiry: "12/25",
-  //     },
-  //     productCredits: {
-  //       "3T_rQEez2dFD9S97RMLiI": 3,
-  //     },
-  //   };
-  //   await set(ref(db, `users/${uniqueId}`), payload);
-  // };
   const dispatch = useDispatch();
-
-  const fileInputRef = useRef(null);
-  const [isUploading, setIsUploading] = useState(false);
-
   const { users, getUsersLoader } = useSelector((state) => state.user);
   const [filteredUsers, setFilteredUsers] = useState(null);
   // const [isModalOpen, setIsModalOpen] = useState(false);
@@ -66,65 +42,60 @@ const UserManagement = () => {
   //   );
   // };
 
-  const handleFileUpload = (event) => {
-    const file = event.target.files[0];
-    if (!file) return;
+  // const handleFileUpload = (event) => {
+  //   const file = event.target.files[0];
+  //   if (!file) return;
 
-    setIsUploading(true);
+  //   setIsUploading(true);
 
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      const data = new Uint8Array(e.target.result);
-      const workbook = XLSX.read(data, { type: "array" });
-      const sheetName = workbook.SheetNames[0];
-      const sheet = workbook.Sheets[sheetName];
-      let jsonData = XLSX.utils.sheet_to_json(sheet);
+  //   const reader = new FileReader();
+  //   reader.onload = (e) => {
+  //     const data = new Uint8Array(e.target.result);
+  //     const workbook = XLSX.read(data, { type: "array" });
+  //     const sheetName = workbook.SheetNames[0];
+  //     const sheet = workbook.Sheets[sheetName];
+  //     let jsonData = XLSX.utils.sheet_to_json(sheet);
 
-      jsonData = jsonData.map((row) => {
-        const newRow = {};
-        Object.keys(row).forEach((key) => {
-          const newKey = key.replace(/\s+/g, "");
-          newRow[newKey] = row[key];
-        });
-        return newRow;
-      });
-      jsonData.forEach((row) => {
-        const userId = nanoid();
+  //     jsonData = jsonData.map((row) => {
+  //       const newRow = {};
+  //       Object.keys(row).forEach((key) => {
+  //         const newKey = key.replace(/\s+/g, "");
+  //         newRow[newKey] = row[key];
+  //       });
+  //       return newRow;
+  //     });
+  //     jsonData.forEach((row) => {
+  //       const userId = nanoid();
 
-        const payload = { ...row };
+  //       const payload = { ...row };
 
-        dispatch(
-          addUser({
-            id: userId,
-            payload,
-            onSuccess: () => {
-              fileInputRef.current.value = null;
-            },
-            onError: (error) => {
-              fileInputRef.current.value = null;
-            },
-          })
-        );
-      });
+  //       dispatch(
+  //         addUser({
+  //           id: userId,
+  //           payload,
+  //           onSuccess: () => {
+  //             fileInputRef.current.value = null;
+  //           },
+  //           onError: (error) => {
+  //             fileInputRef.current.value = null;
+  //           },
+  //         })
+  //       );
+  //     });
 
-      setIsUploading(false);
-    };
-    reader.readAsArrayBuffer(file);
-    fileInputRef.current.value = null;
-    dispatch(
-      getUsers({
-        onSuccess: (data) => {
-          setFilteredUsers(data);
-        },
-        onError: (data) => {},
-      })
-    );
-  };
-
-  // Function to trigger file input click
-  const triggerFileInput = () => {
-    fileInputRef.current.click();
-  };
+  //     setIsUploading(false);
+  //   };
+  //   reader.readAsArrayBuffer(file);
+  //   fileInputRef.current.value = null;
+  //   dispatch(
+  //     getUsers({
+  //       onSuccess: (data) => {
+  //         setFilteredUsers(data);
+  //       },
+  //       onError: (data) => {},
+  //     })
+  //   );
+  // };
 
   useEffect(() => {
     dispatch(
@@ -135,13 +106,9 @@ const UserManagement = () => {
         onError: (data) => {},
       })
     );
-  }, [isUploading]);
+  }, []);
 
-  return isUploading ? (
-    <div className="col-span-12 flex justify-center items-center h-96">
-      <ImSpinner8 className="spinning-icon animate-spin text-4xl" />
-    </div>
-  ) : (
+  return (
     <div>
       <div className="sm:flex sm:justify-between sm:items-center mb-8">
         <div className="mb-4 sm:mb-0">
@@ -157,23 +124,15 @@ const UserManagement = () => {
             onChange={(e) => handleSearch(e.target.value)}
           />
 
-          <div className="flex items-center w-full md:w-36">
-            <input
-              type="file"
-              ref={fileInputRef}
-              onChange={handleFileUpload}
-              accept=".xlsx, .xls"
-              style={{ display: "none" }}
-            />
-            <button
-              type="file"
-              onClick={triggerFileInput}
-              disabled={isUploading}
-              className={"py-2 w-full md:w-36 px-4 bg-gray-900 text-gray-100 hover:bg-gray-800 dark:bg-gray-100 dark:text-gray-800 dark:hover:bg-white rounded-md transition duration-200"}
-            >
-              Import Users
-            </button>
-          </div>
+          <button
+            // onClick={addClicked}
+            className="py-2 px-4 bg-gray-900 text-gray-100 hover:bg-gray-800 dark:bg-gray-100 dark:text-gray-800 dark:hover:bg-white rounded-md transition duration-200"
+          >
+            <div className="flex items-center gap-1">
+              <HiOutlinePlusSm className="text-2xl" />
+              <h3>Add</h3>
+            </div>
+          </button>
         </div>
       </div>
       <div className="grid grid-cols-12 gap-6">

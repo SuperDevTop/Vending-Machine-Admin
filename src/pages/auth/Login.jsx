@@ -5,7 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { LoginSchema } from "../../schemas/index";
 import { useNavigate } from "react-router-dom";
 import ThemeToggle from "../../components/ThemeToggle";
-import { loginUser } from "../../store/user/userThunk";
+import { loginUser } from "../../store/admin/adminThunk";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { ImSpinner8 } from "react-icons/im";
@@ -14,7 +14,7 @@ import withAuthRedirect from '../../components/withAuthRedirect';
 const Login = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { loginLoader } = useSelector((state) => state?.user);
+  const { loginLoader } = useSelector((state) => state?.admin);
   const [showPassword, setShowPassword] = useState(false);
 
   const {
