@@ -28,6 +28,7 @@ const EditMachineModal = ({ isOpen, onSave, onClose, machine, id }) => {
   } = useForm({
     resolver: zodResolver(EditMachineSchema),
     defaultValues: {
+      serialNo: "",
       machineName: "",
       description: "",
       location: "",
@@ -41,6 +42,7 @@ const EditMachineModal = ({ isOpen, onSave, onClose, machine, id }) => {
       setValue("machineName", machine.machineName);
       setValue("description", machine.description);
       setValue("location", machine.location);
+      setValue("serialNo", machine.serialNo);
       setStatus(machine.status ? "Active" : "Inactive");
     }
   }, [machine, setValue]);
@@ -110,7 +112,10 @@ const EditMachineModal = ({ isOpen, onSave, onClose, machine, id }) => {
   );
 
   return (
-    <div className="fixed top-0 left-0 right-0 bg-gray-800 bg-opacity-90 flex items-center justify-center md:inset-0 h-[calc(100%-1rem)] max-h-full" style={{ zIndex: 1000 }}>
+    <div
+      className="fixed top-0 left-0 right-0 bg-gray-800 bg-opacity-90 flex items-center justify-center md:inset-0 h-[calc(100%-1rem)] max-h-full"
+      style={{ zIndex: 1000 }}
+    >
       <div className="flex flex-col w-full max-w-3xl max-h-full bg-white dark:bg-gray-800 border dark:border-gray-600 text-center text-xs rounded-lg text-black dark:text-white font-quicksand box-border overflow-auto">
         {/* Header */}
         <div className="bg-white dark:bg-gray-800 px-8 py-2 mb-8">
@@ -123,7 +128,11 @@ const EditMachineModal = ({ isOpen, onSave, onClose, machine, id }) => {
         </div>
 
         {/* Form */}
-        <form className="grid grid-cols-1 md:grid-cols-2 gap-4 p-5" onSubmit={handleSubmit(onSubmit)}>
+        <form
+          className="grid grid-cols-1 md:grid-cols-2 gap-4 p-5"
+          onSubmit={handleSubmit(onSubmit)}
+        >
+          <FormField label="Serial Number" name="serialNo" />
           <FormField label="Machine Name" name="machineName" />
           <FormField label="Description" name="description" />
           <FormField label="Location" name="location" />

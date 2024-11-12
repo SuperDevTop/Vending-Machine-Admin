@@ -1,9 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { loginUser, signOutUser, addUser, getUsers } from "./userThunk";
+import { addUser, getUsers } from "./userThunk";
 
 const initialState = {
-  user: null,
-  loginLoader: false,
+  test: null,
   users: null,
   addUserLoader: false,
   getUsersLoader: false,
@@ -14,27 +13,12 @@ export const userSlice = createSlice({
   initialState,
   reducers: {
     logoutUser: (state) => {
-      state.user = null;
+      state.test = null;
     },
   },
 
   extraReducers: (builder) => {
     builder
-      .addCase(loginUser.pending, (state, action) => {
-        state.loginLoader = true;
-      })
-      .addCase(loginUser.fulfilled, (state, action) => {
-        state.loginLoader = false;
-        state.user = action?.payload;
-      })
-      .addCase(loginUser.rejected, (state, action) => {
-        state.loginLoader = false;
-      })
-      .addCase(signOutUser.pending, (state, action) => {})
-      .addCase(signOutUser.fulfilled, (state, action) => {
-        state.user = null;
-      })
-      .addCase(signOutUser.rejected, (state, action) => {})
       .addCase(addUser.pending, (state, action) => {
         state.addUserLoader = true;
       })

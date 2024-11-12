@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import Transition from "../utils/Transition";
 import { useDispatch, useSelector } from "react-redux";
 import UserAvatar from "../images/user-avatar-32.png";
-import { signOutUser } from "../store/user/userThunk";
+import { signOutUser } from "../store/admin/adminThunk";
 
 function DropdownProfile({ align }) {
   const [dropdownOpen, setDropdownOpen] = useState(false);

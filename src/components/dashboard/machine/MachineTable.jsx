@@ -77,6 +77,9 @@ const MachineTable = ({ vendingMachines, setFilteredMachines }) => {
               {/* Table header */}
               <thead className="text-xs uppercase text-gray-400 dark:text-gray-500 bg-gray-50 dark:bg-gray-700 dark:bg-opacity-50 rounded-sm">
                 <tr>
+                <th className="p-2">
+                    <div className="font-semibold text-left truncate">Serial Number</div>
+                  </th>
                   <th className="p-2">
                     <div className="font-semibold text-left truncate">Name</div>
                   </th>
@@ -103,6 +106,11 @@ const MachineTable = ({ vendingMachines, setFilteredMachines }) => {
                   Object.entries(vendingMachines).map(([id, machine]) => {
                     return (
                       <tr key={id}>
+                        <td className="p-2">
+                          <div className="text-gray-800 dark:text-gray-100">
+                            {machine?.serialNo}
+                          </div>
+                        </td>
                         <td className="p-2">
                           <div className="text-gray-800 dark:text-gray-100">
                             {machine?.machineName}

@@ -58,7 +58,59 @@ export const deleteVendingMachine = createAsyncThunk(
   "vendingMachine/VendingMachine",
   async ({ id, onSuccess, onError }, thunkAPI) => {
     try {
-      await remove(ref(db, `vendingMachine/${id}`));
+      // Step 1: Get the vending machine data to find the operator ID
+      const vendingMachineRef = ref(db, `vendingMachine/${id}`);
+      const vendingMachineSnapshot = await get(vendingMachineRef);
+
+      if (vendingMachineSnapshot.exists()) {
+        const vendingMachineData = vendingMachineSnapshot.val();
+        const operatorId = vendingMachineData.operatorId;
+
+        // Step 2: Remove the vending machine from the vendingMachine node
+        await remove(vendingMachineRef);
+        console.log(
+          `Vending machine with ID ${id} deleted successfully.`
+        );
+
+        // Step 3: Access the assignedMachines list under the specific operator
+        const operatorRef = ref(db, `operators/${operatorId}/assignedMachines`);
+        const operatorSnapshot = await get(operatorRef);
+
+        if (operatorSnapshot.exists()) {
+          const assignedMachines = operatorSnapshot.val();
+          let machineKeyToDelete = null;
+
+          // Find the key for the machineId we want to delete
+          Object.keys(assignedMachines).forEach((key) => {
+            if (assignedMachines[key] === id) {
+              machineKeyToDelete = key;
+            }
+          });
+
+          if (machineKeyToDelete) {
+            // Remove the machine from the assignedMachines list
+            const machineRefToDelete = ref(
+              db,
+              `operators/${operatorId}/assignedMachines/${machineKeyToDelete}`
+            );
+            await remove(machineRefToDelete);
+            console.log(
+              `Machine ID ${id} removed from operator's assignedMachines list.`
+            );
+          } else {
+            console.log(
+              `Machine ID ${id} not found in operator's assignedMachines list.`
+            );
+          }
+        } else {
+          console.log("Operator's assignedMachines list not found.");
+        }
+      } else {
+        console.log("Vending machine not found.");
+      }
+
+      // await remove(ref(db, `vendingMachine/${id}`));
+
       onSuccess();
     } catch (error) {
       onError(error.data.details || "something went wrong");
